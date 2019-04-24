@@ -19,7 +19,10 @@ SOURCES += \
     documentslistmodule.cpp \
     imageprovider.cpp \
     patternrecognitionmodule.cpp \
-    inspectionsystem.cpp
+    inspectionsystem.cpp \
+    jsonparseclass.cpp \
+    infoclass.cpp \
+    documenthandler.cpp
 
 RESOURCES += qml.qrc
 
@@ -40,6 +43,9 @@ HEADERS += \
     documentslistmodule.h \
     imageprovider.h \
     patternrecognitionmodule.h \
-    inspectionsystem.h
+    inspectionsystem.h \
+    jsonparseclass.h \
+    infoclass.h \
+    documenthandler.h
 
 DISTFILES +=

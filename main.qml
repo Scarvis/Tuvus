@@ -491,9 +491,10 @@ ApplicationWindow {
         }
 
         Column {
-            Rectangle {
+            Row{
+                Rectangle {
                 id: curentDocumentInfo
-                width: mainWindow.width
+                width: 1110
                 height: 40
                 Text {
                     text: qsTr("test text")
@@ -511,8 +512,34 @@ ApplicationWindow {
                     anchors.top: parent.bottom
                     color: "#D6E5FE"
                 }
+                border {
+                    color: "#D6E5FE"
+                    width: 2
+                }
             }
-
+                Rectangle {
+                    id: recognizedIssuesText
+                    width: 300
+                    height: 40
+                    Text {
+                        text: "Распознанные ответы"
+                        font.pixelSize: 14
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                }
+                Rectangle {
+                    id: rightAnswersText
+                    width: 300
+                    height: 40
+                    Text {
+                        text: qsTr("Правильные ответы")
+                        font.pixelSize: 14
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                }
+            }
             Row {
                 Rectangle {
                     id: closeUpDocument
@@ -590,7 +617,7 @@ ApplicationWindow {
                                 font.pixelSize: 20
                             }
                             onClicked: {
-                                if(indexCroppedQuestionImage < 60)
+                                if(indexCroppedQuestionImage < 10)
                                     indexCroppedQuestionImage++;
                             }
                         }
@@ -647,6 +674,7 @@ ApplicationWindow {
                                 anchors.fill: parent
                                 anchors.margins: 5
                                 text: recognizedIssues
+                                anchors.horizontalCenter: recognizedIssuesArea.horizontalCenter
                             }
                         }
                         model: ListModel {
@@ -674,6 +702,7 @@ ApplicationWindow {
                             Text {
                                 anchors.fill: parent
                                 anchors.margins: 5
+                                anchors.horizontalCenter: parent.horizontalCenter
                                 text: rightAnswer
                             }
                         }
@@ -714,7 +743,7 @@ ApplicationWindow {
     FileDialog {
         id: openDialog
         title: "Please choose a file"
-        //folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+
         onAccepted: {
             console.log("You choose: " + openDialog.fileUrls)
             //Qt.quit()

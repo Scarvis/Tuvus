@@ -7,6 +7,10 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QFile>
+#include <QJsonParseError>
+#include "jsonparseclass.h"
+#include "infoclass.h"
 
 class patternRecognitionModule
 {
@@ -15,16 +19,21 @@ public:
     patternRecognitionModule(QString str);
     int setNewPatternRecognition(QString str);
     int isOk() const;
+    int setTestPatternRecognition();
 private:
     int countQuestion = 0;
     int numbersOfReplies = 0;
     int answerNumber = 0;
     int defaultNumbersOfCorrectReplies = 0;
     double indentBetweenQuestions = 0;
-    const QString testPatternFileName = "test_pattern.json";
-    QDir testPatternFilePath = QDir::currentPath() + "/" + testPatternFileName;
+    QVector<InfoClass> questionsAnswersInfo;
+
+    const QString testPatternFileName = "/src/patterns/test_pattern.json";
+    QDir testPatternFilePath = QDir::currentPath() + testPatternFileName;
     QString jsonString = "";
     int isOkCurrentPattern = 0;
+    JsonParseClass jsonParse;
+
 };
 
 #endif // PATTERNRECOGNITIONMODULE_H

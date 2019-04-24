@@ -7,8 +7,9 @@
 #include "backend.h"
 #include "documentslistmodel.h"
 #include "documentslistmodule.h"
+#include "inspectionsystem.h"
 #include "patternrecognitionmodule.h"
-//#include "imageprovider.h"
+
 
 
 int main(int argc, char *argv[])
@@ -25,13 +26,10 @@ int main(int argc, char *argv[])
     qmlRegisterType<DocumentsListModel>("DocumentsList", 1, 0, "DocumentsListModel");
     qmlRegisterUncreatableType<DocumentsListModule>("DocumentsList", 1, 0, "DocumentsListModule",
                                                     QStringLiteral("should not be created in QML"));
-    patternRecognitionModule patre();
-    //qWarning() << "Dir: " << QDir::currentPath();
+    inspectionSystem inspectSys("test");
     DocumentsListModule documentsListFromDB;
 
     QQmlApplicationEngine engine;
-//    ImageProvider *imgProvider = new ImageProvider();
-//    engine.addImageProvider("provedor", imgProvider);
 
     engine.rootContext()->setContextProperty(QStringLiteral("documentsListFromDB"), &documentsListFromDB);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
