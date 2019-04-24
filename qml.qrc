@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>MyButton.qml</file>
+        <file>background.png</file>
+        <file>column.qml</file>
+        <file>Square.qml</file>
+        <file>CustomMenuItem.qml</file>
+        <file>CustomDelegate.qml</file>
+        <file>Example_2-1.PNG</file>
+        <file>Example2.PNG</file>
+        <file>fontello.ttf</file>
+        <file>Button.qml</file>
+    </qresource>
+</RCC>
