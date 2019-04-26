@@ -4,11 +4,14 @@
 #include <QFontDatabase>
 #include <QDebug>
 
+
+
 #include "backend.h"
 #include "documentslistmodel.h"
 #include "documentslistmodule.h"
 #include "inspectionsystem.h"
 #include "patternrecognitionmodule.h"
+#include "documenthandler.h"
 
 
 
@@ -24,6 +27,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<BackEnd>("io.qt.examples.backend", 1, 0, "BackEnd");
     qmlRegisterType<DocumentsListModel>("DocumentsList", 1, 0, "DocumentsListModel");
+    qmlRegisterType<DocumentHandler>("io.qt.docHandler", 1, 0, "DocumentHandler");
     qmlRegisterUncreatableType<DocumentsListModule>("DocumentsList", 1, 0, "DocumentsListModule",
                                                     QStringLiteral("should not be created in QML"));
     inspectionSystem inspectSys("test");

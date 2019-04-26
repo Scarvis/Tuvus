@@ -20,6 +20,7 @@ public:
     int setNewPatternRecognition(QString str);
     int isOk() const;
     int setTestPatternRecognition();
+    QVector<InfoClass> getRecognitionArea();
 private:
     int countQuestion = 0;
     int numbersOfReplies = 0;
@@ -27,12 +28,12 @@ private:
     int defaultNumbersOfCorrectReplies = 0;
     double indentBetweenQuestions = 0;
     QVector<InfoClass> questionsAnswersInfo;
-
-    const QString testPatternFileName = "/src/patterns/test_pattern.json";
-    QDir testPatternFilePath = QDir::currentPath() + testPatternFileName;
-    QString jsonString = "";
+    QVector<InfoClass> recognitionArea;
     int isOkCurrentPattern = 0;
     JsonParseClass jsonParse;
+
+    const QString testPatternFileName = "/src/patterns/test_pattern.json";
+    const QDir testPatternFilePath = QDir::currentPath() + testPatternFileName;
 
 };
 

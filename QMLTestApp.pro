@@ -22,7 +22,17 @@ SOURCES += \
     inspectionsystem.cpp \
     jsonparseclass.cpp \
     infoclass.cpp \
-    documenthandler.cpp
+    documenthandler.cpp \
+    recognitionmodule.cpp \
+    recognitionresults.cpp
+
+INCLUDEPATH += $$PWD//tesseract-include//tesseract \
+           $$PWD//tesseract-include//leptonica \
+           $$PWD//tesseract-include//
+
+LIBS += -L"$$PWD//tesseract-include//" -lliblept168 \
+        -L"$$PWD//tesseract-include//" -llibtesseract302
+
 
 RESOURCES += qml.qrc
 
@@ -46,6 +56,8 @@ HEADERS += \
     inspectionsystem.h \
     jsonparseclass.h \
     infoclass.h \
-    documenthandler.h
+    documenthandler.h \
+    recognitionmodule.h \
+    recognitionresults.h
 
 DISTFILES +=

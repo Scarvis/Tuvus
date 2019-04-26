@@ -20,7 +20,7 @@ patternRecognitionModule::patternRecognitionModule(QString str)
 int patternRecognitionModule::setNewPatternRecognition(QString str)
 {
     if(str == "test"){
-        setTestPatternRecognition();
+        isOkCurrentPattern = setTestPatternRecognition();
     }
     return 0;
 }
@@ -100,5 +100,10 @@ int patternRecognitionModule::setTestPatternRecognition()
 
 
 
-    return 0;
+    return 1;
+}
+
+QVector<InfoClass> patternRecognitionModule::getRecognitionArea()
+{
+    return recognitionArea;
 }

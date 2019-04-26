@@ -6,6 +6,7 @@
 #include <QVector>
 #include <QImage>
 #include <QBuffer>
+#include <QUrl>
 
 struct documentsListItem
 {
@@ -45,6 +46,9 @@ public slots:
 
     void startRecognition();
 
+//public Q_SLOTS:
+//    void load(const QUrl &fileUrl);
+
 
 private:
     QImage cropImage(QImage original, QRect rect);
@@ -54,7 +58,7 @@ private:
     QVector<int> statusDocuments;
     QVector<int> recognizeQuestionsResult;
     QVector<int> rightAnswersArray;
-
+    //QUrl m_fileUrl;
 };
 
 #endif // DOCUMENTSLISTMODULE_H

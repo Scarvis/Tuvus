@@ -8,12 +8,13 @@ import QtQuick.Dialogs 1.2
 
 import io.qt.examples.backend 1.0
 import DocumentsList 1.0
+import io.qt.docHandler 1.0
 
 ApplicationWindow {
     id: mainWindow
     visible: true
-    height: 800
-    width: 1400
+    height: 1000
+    width: 1920
     property color menuBackgroundColor: "#3C3C3C"
     property color menuBorderColor: "#282828"
     property int number: 0
@@ -179,6 +180,7 @@ ApplicationWindow {
                 color: menuBarItem.highlighted ? "#858687" : menuBackgroundColor
             }
         }
+
         background: Rectangle {
             implicitHeight: 35
             color: menuBackgroundColor
@@ -220,6 +222,7 @@ ApplicationWindow {
                     console.log("button clicked " + (++number))
                 }
             }
+
             ToolButton {
                 //id: openFolderButton
                 anchors.top: testButton.bottom
@@ -370,13 +373,16 @@ ApplicationWindow {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.fill: parent
-                    leftMargin: 30
+                    leftMargin: 25
                     visible: true
                     spacing: 135
 
                     width: parent.width
                     focus: true
                     clip: true
+
+                    ScrollBar.vertical: ScrollBar {visible: true}
+
                     model: DocumentsListModel {
                         id: modelList
                         list: documentsListFromDB
@@ -491,7 +497,7 @@ ApplicationWindow {
         }
 
         Column {
-            Row{
+            Row {
                 Rectangle {
                 id: curentDocumentInfo
                 width: 1110
@@ -517,6 +523,7 @@ ApplicationWindow {
                     width: 2
                 }
             }
+
                 Rectangle {
                     id: recognizedIssuesText
                     width: 300
@@ -528,6 +535,7 @@ ApplicationWindow {
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
                 }
+
                 Rectangle {
                     id: rightAnswersText
                     width: 300
@@ -540,13 +548,14 @@ ApplicationWindow {
                     }
                 }
             }
+
             Row {
                 Rectangle {
                     id: closeUpDocument
                     width: 910
                     height: (mainWindow.height / 8) * 7
                     anchors.topMargin: 5
-                    //color: "red"
+                    antialiasing: true
                     Image {
                         width: parent.width - 10
                         //height: parent.height
@@ -721,7 +730,7 @@ ApplicationWindow {
 
     header: ToolBar {
         leftPadding: 8
-
+        anchors.top: menuBar.bottom
         Flow {
             id: flow
             width: parent.width
@@ -746,16 +755,24 @@ ApplicationWindow {
 
         onAccepted: {
             console.log("You choose: " + openDialog.fileUrls)
+            documentHand.load(file)
             //Qt.quit()
         }
         onRejected: {
             console.log("Canceled")
            //Qt.quit()
         }
-        nameFilters: [ "Image files (*.png *.jpg)", "All files (*)" ]
+        nameFilters: [ "Image files (*.png *.jpg)"]
         selectedNameFilter: "Image files (*.png *.jpg)"
     }
 
+    MessageDialog {
+        id: errorDialog
+    }
 
+    DocumentHandler {
+        id: documentHand
+
+    }
 
 }
