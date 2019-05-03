@@ -1,11 +1,12 @@
 #ifndef INFOCLASS_H
 #define INFOCLASS_H
 #include <QVector>
-
+#include <QRect>
 class InfoClass
 {
 public:
     InfoClass();
+    InfoClass(int x, int y, int width, int height);
     InfoClass(int number, int x, int y, int width, int height, QVector<InfoClass> answers);
     //InfoClass(InfoClass infoClass);
     int number() const;
@@ -14,6 +15,7 @@ public:
     int width() const;
     int height() const;
     QVector<InfoClass> answers() const;
+    QRect getQRect();
     void setNumber(int Number);
     void setX(int X);
     void setY(int Y);

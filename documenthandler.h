@@ -8,8 +8,10 @@ class DocumentHandler : public QObject
 {
 public:
     DocumentHandler();
-public Q_SLOTS:
+
     void load(const QUrl &fileUrl);
+    void loadFile(const QUrl &fileUrl);
+    void loadFolder(const QUrl &folderUrl);
 
 private:
     QUrl m_fileUrl;

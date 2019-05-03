@@ -205,6 +205,7 @@ ApplicationWindow {
 
     Row {
         y: 35
+
         Rectangle {
             width: 40
             height: mainWindow.height
@@ -552,13 +553,13 @@ ApplicationWindow {
             Row {
                 Rectangle {
                     id: closeUpDocument
-                    width: 910
+                    width: 1100
+                    //width: 910
                     height: (mainWindow.height / 8) * 7
                     anchors.topMargin: 5
                     antialiasing: true
                     Image {
                         width: parent.width - 10
-                        //height: parent.height
                         anchors.verticalCenter: closeUpDocument.verticalCenter
                         anchors.horizontalCenter: closeUpDocument.horizontalCenter
                         anchors.leftMargin: 5
@@ -570,99 +571,99 @@ ApplicationWindow {
                 }
 
 
-                Column {
-                    Row {
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        spacing: 5
-                        Button {
-                            height: 25
-                            width: 25
-                            Text {
-                                text: "\uF177"
-                                font.family: "fontello"
-                                font.pixelSize: 20
-                            }
-                            onClicked: {
-                                if(indexCroppedQuestionImage > 1)
-                                    indexCroppedQuestionImage--;
-                            }
-                        }
-                        Rectangle {
-                            height: 24
-                            width: 48
-                            border {
-                                color: "#D6E5FE"
-                                width: 0.5
-                            }
-                            TextEdit {
-                                height: 25
-                                width: 50
-                                //validator: RegExpValidator { regExp : /[0-9]+\.[0-9]+/ }
-                                wrapMode: Text.WordWrap
-                                cursorVisible: false
-                                Text {
-                                    text: indexCroppedQuestionImage
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                }
-                                readOnly: true
-                                onTextChanged: {
-                                    if(text.length < 5){
-                                        indexCroppedQuestionImage = getText(0, text.length)
-                                        console.log("text change", indexCroppedQuestionImage)
-                                    }
-                                    else {
+//                Column {
+//                    Row {
+//                        anchors.horizontalCenter: parent.horizontalCenter
+//                        spacing: 5
+//                        Button {
+//                            height: 25
+//                            width: 25
+//                            Text {
+//                                text: "\uF177"
+//                                font.family: "fontello"
+//                                font.pixelSize: 20
+//                            }
+//                            onClicked: {
+//                                if(indexCroppedQuestionImage > 1)
+//                                    indexCroppedQuestionImage--;
+//                            }
+//                        }
+//                        Rectangle {
+//                            height: 24
+//                            width: 48
+//                            border {
+//                                color: "#D6E5FE"
+//                                width: 0.5
+//                            }
+//                            TextEdit {
+//                                height: 25
+//                                width: 50
+//                                //validator: RegExpValidator { regExp : /[0-9]+\.[0-9]+/ }
+//                                wrapMode: Text.WordWrap
+//                                cursorVisible: false
+//                                Text {
+//                                    text: indexCroppedQuestionImage
+//                                    anchors.horizontalCenter: parent.horizontalCenter
+//                                    anchors.verticalCenter: parent.verticalCenter
+//                                }
+//                                readOnly: true
+//                                onTextChanged: {
+//                                    if(text.length < 5){
+//                                        indexCroppedQuestionImage = getText(0, text.length)
+//                                        console.log("text change", indexCroppedQuestionImage)
+//                                    }
+//                                    else {
 
-                                    }
-                                }
-                            }
-                        }
-                        Button {
-                            height: 25
-                            width: 25
-                            Text {
-                                text: "\uF178"
-                                font.family: "fontello"
-                                font.pixelSize: 20
-                            }
-                            onClicked: {
-                                if(indexCroppedQuestionImage < 10)
-                                    indexCroppedQuestionImage++;
-                            }
-                        }
-                    }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                        Button {
+//                            height: 25
+//                            width: 25
+//                            Text {
+//                                text: "\uF178"
+//                                font.family: "fontello"
+//                                font.pixelSize: 20
+//                            }
+//                            onClicked: {
+//                                if(indexCroppedQuestionImage < 10)
+//                                    indexCroppedQuestionImage++;
+//                            }
+//                        }
+//                    }
 
-                    Rectangle {
-                        id: croppingDocumentQuestion
-                        width: parent.width
-                        height: 250
-                        anchors.topMargin: 10
-                        Image {
-                            //source: "background.png"
-                            source: {
-                                var pf = modelList.list.getCurrentCropQuestion(indexCroppedQuestionImage)
-                                return pf
-                            }
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            //anchors.verticalCenter: parent.verticalCenter
-                            width: parent.width - 20
-                            height: 150
-                        }
-                    }
+//                    Rectangle {
+//                        id: croppingDocumentQuestion
+//                        width: parent.width
+//                        height: 250
+//                        anchors.topMargin: 10
+//                        Image {
+//                            //source: "background.png"
+//                            source: {
+//                                var pf = modelList.list.getCurrentCropQuestion(indexCroppedQuestionImage)
+//                                return pf
+//                            }
+//                            anchors.horizontalCenter: parent.horizontalCenter
+//                            //anchors.verticalCenter: parent.verticalCenter
+//                            width: parent.width - 20
+//                            height: 150
+//                        }
+//                    }
 
-                    Row {
-                        Rectangle {
-                            width: 100
-                            height: 540
-                            color: "blue"
-                        }
-                        Rectangle {
-                            width: 100
-                            height: 540
-                            color: "yellow"
-                        }
-                    }
-                }
+//                    Row {
+//                        Rectangle {
+//                            width: 100
+//                            height: 540
+//                            color: "blue"
+//                        }
+//                        Rectangle {
+//                            width: 100
+//                            height: 540
+//                            color: "yellow"
+//                        }
+//                    }
+//                }
 
                 Rectangle {
                     id: recognizedIssuesArea
@@ -683,7 +684,6 @@ ApplicationWindow {
                                 anchors.fill: parent
                                 anchors.margins: 5
                                 text: recognizedIssues
-                                anchors.horizontalCenter: recognizedIssuesArea.horizontalCenter
                             }
                         }
                         model: ListModel {
@@ -711,7 +711,6 @@ ApplicationWindow {
                             Text {
                                 anchors.fill: parent
                                 anchors.margins: 5
-                                anchors.horizontalCenter: parent.horizontalCenter
                                 text: rightAnswer
                             }
                         }
@@ -728,26 +727,27 @@ ApplicationWindow {
         }
     }
 
-    header: ToolBar {
-        leftPadding: 8
-        anchors.top: menuBar.bottom
-        Flow {
-            id: flow
-            width: parent.width
+//    ToolBar {
+//        leftPadding: 8
+//        anchors.top: menuBar.bottom
+//        width: parent.width
+//        Flow {
+//            id: flow
+//            //width: parent.width
 
-            Row {
-                id: fileRow
-                ToolButton {
-                    id: openButton
-                    text: "\uF115" // icon-folder-open-empty
-                    font.family: "fontello"
-                    font.pixelSize: toolButtonIconSizeGeneral
-                    onClicked: openDialog.open()
-                }
+//            Row {
+//                id: fileRow
+//                ToolButton {
+//                    id: openButton
+//                    text: "\uF115" // icon-folder-open-empty
+//                    font.family: "fontello"
+//                    font.pixelSize: toolButtonIconSizeGeneral
+//                    onClicked: openDialog.open()
+//                }
 
-            }
-        }
-    }
+//            }
+//        }
+//    }
 
     FileDialog {
         id: openDialog

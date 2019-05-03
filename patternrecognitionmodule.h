@@ -21,6 +21,21 @@ public:
     int isOk() const;
     int setTestPatternRecognition();
     QVector<InfoClass> getRecognitionArea();
+    patternRecognitionModule operator=(const patternRecognitionModule right){
+        if(this == &right){
+            return *this;
+        }
+        recognitionArea = right.recognitionArea;
+        QVector<InfoClass> questionsAnswersInfo = right.questionsAnswersInfo;
+        countQuestion = right.countQuestion;
+        numbersOfReplies = right.numbersOfReplies;
+        answerNumber = right.answerNumber;
+        defaultNumbersOfCorrectReplies = right.defaultNumbersOfCorrectReplies;
+        indentBetweenQuestions = right.indentBetweenQuestions;
+        isOkCurrentPattern = right.isOkCurrentPattern;
+
+        return *this;
+    }
 private:
     int countQuestion = 0;
     int numbersOfReplies = 0;
@@ -29,7 +44,7 @@ private:
     double indentBetweenQuestions = 0;
     QVector<InfoClass> questionsAnswersInfo;
     QVector<InfoClass> recognitionArea;
-    int isOkCurrentPattern = 0;
+    int isOkCurrentPattern = 1;
     JsonParseClass jsonParse;
 
     const QString testPatternFileName = "/src/patterns/test_pattern.json";

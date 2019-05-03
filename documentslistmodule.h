@@ -27,7 +27,7 @@ public:
     bool setItemAt(int index, const documentsListItem &item);
 
     QVector<documentsListItem> items() const;
-
+    QString getItem(const int index);
 
 
 signals:

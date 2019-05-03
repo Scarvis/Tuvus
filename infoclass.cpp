@@ -5,6 +5,14 @@ InfoClass::InfoClass()
 
 }
 
+InfoClass::InfoClass(int x, int y, int width, int height)
+{
+    this->X = x;
+    this->Y = y;
+    this->Width = width;
+    this->Height = height;
+}
+
 InfoClass::InfoClass(int number, int x, int y, int width, int height, QVector<InfoClass> answers)
 {
     this->Number = number;
@@ -43,6 +51,11 @@ int InfoClass::height() const
 QVector<InfoClass> InfoClass::answers() const
 {
     return Answers;
+}
+
+QRect InfoClass::getQRect()
+{
+    return QRect(X, Y, Width, Height);
 }
 
 void InfoClass::setNumber(int Number)

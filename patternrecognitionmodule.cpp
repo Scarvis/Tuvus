@@ -75,6 +75,7 @@ int patternRecognitionModule::setTestPatternRecognition()
         InfoClass curInfo = jsonParse.setTestData(jsonMap, keyList);
         questionsAnswersInfo.append(curInfo);
     }
+    recognitionArea.append(InfoClass(190, 120, 75, 19));
     //    jsonList.clear();
     //    jsonList = jsonMapRoot["answers"].toList();
     //    for (int i = 0; i < jsonList.size(); i++) {

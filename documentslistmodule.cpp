@@ -33,6 +33,18 @@ QVector<documentsListItem> DocumentsListModule::items() const
     return mItems;
 }
 
+QString DocumentsListModule::getItem(const int index) //from inspectionsystem
+{
+    if(mItems.count() <= 0)
+        return "";
+    if(index > mItems.count())
+    {
+        mCurrentIndexClicked = 0;
+        return "";
+    }
+    return mItems.at(index).pathFile;
+}
+
 int DocumentsListModule::currentIndexClicked()
 {
     return mCurrentIndexClicked;
