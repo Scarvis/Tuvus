@@ -26,13 +26,12 @@ QImage RecognitionModule::cropImage(QImage original, QRect rect)
     return cropped;
 }
 
-RecognitionResults RecognitionModule::startRecognition(QImage objectRecognition, InfoClass recognitionArea, patternRecognitionModule pattern)
+RecognitionResults RecognitionModule::startRecognition(QImage objectRecognition, patternRecognitionModule pattern)
 {
     RecognitionResults res;
     QVector<InfoClass> recArea = pattern.getRecognitionArea();
     QImage objRecog = objectRecognition;
     for (int i = 0; i < recArea.size(); i++) {
-        //QRect rect = QRect(recArea[i].x(), recArea[i].y(), recArea[i].width(), recArea[i].height());
         QRect rect = recArea[i].getQRect();
         QImage recImage = cropImage(objRecog, rect);
         QString result = recognize(recImage);

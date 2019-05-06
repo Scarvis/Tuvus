@@ -28,19 +28,18 @@ int main(int argc, char *argv[])
     qmlRegisterType<BackEnd>("io.qt.examples.backend", 1, 0, "BackEnd");
     qmlRegisterType<DocumentsListModel>("DocumentsList", 1, 0, "DocumentsListModel");
     qmlRegisterType<DocumentHandler>("io.qt.docHandler", 1, 0, "DocumentHandler");
+    qmlRegisterType<inspectionSystem>("DocumentsList", 1, 0, "QInspectionSystem");
     qmlRegisterUncreatableType<DocumentsListModule>("DocumentsList", 1, 0, "DocumentsListModule",
                                                     QStringLiteral("should not be created in QML"));
-//    qmlRegisterUncreatableType<inspectionSystem>("io.qt.INSPECTIONSystem", 1, 0, "inspectionSystem",
-//                                                    QStringLiteral("should not be created in QML"));
 
 
-    inspectionSystem inspectSys("test");
     DocumentsListModule documentsListFromDB;
+
+
 
     QQmlApplicationEngine engine;
 
     engine.rootContext()->setContextProperty(QStringLiteral("documentsListFromDB"), &documentsListFromDB);
-    //engine.rootContext()->setContextProperty(QStringLiteral("inspectionSystem"), &inspectSys);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;

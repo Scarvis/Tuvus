@@ -26,9 +26,10 @@ ApplicationWindow {
     property int toolButtonIconSizeGeneral: 16
     property var recognizeIssuesArrayFromCode: []
     property var rightAnswersArrayFromCode: []
+    property var prostoBuf: []
 
 
-    MenuBar {
+    header: MenuBar {
         id: menuBar
         width: parent.width
 
@@ -195,11 +196,36 @@ ApplicationWindow {
         }
     }
 
-    BackEnd {
-        id: backend
+    ToolBar {
+        leftPadding: 8
+        anchors.top: menuBar.bottom
+        width: parent.width
+        Flow {
+            id: flow
+            //width: parent.width
+
+            Row {
+                id: fileRow
+                ToolButton {
+                    id: openButton
+                    text: "\uF115" // icon-folder-open-empty
+                    font.family: "fontello"
+                    font.pixelSize: toolButtonIconSizeGeneral
+                    onClicked: openDialog.open()
+                }
+
+            }
+        }
     }
 
 
+
+
+
+
+    QInspectionSystem {
+        id: inspectionSystem
+    }
 
 
 
@@ -218,9 +244,9 @@ ApplicationWindow {
                 height: 40
                 text: qsTr("test")
                 onClicked: {
-                    documentsListFromDB.appendItem();
-                    //modelList.append({pathFile: "background.png", nameFile: "qwe"})
+                    //documentsListFromDB.appendItem();
                     console.log("button clicked " + (++number))
+                    inspectionSystem.loadFolder("bsl")
                 }
             }
 
@@ -239,6 +265,7 @@ ApplicationWindow {
                 onClicked: {
                     //openDialog.open()
                     console.log("openFolderButton")
+                    //prostoBuf = inspectionSystem.getDocListItem()
                 }
             }
         }
@@ -329,7 +356,8 @@ ApplicationWindow {
                                     opacity: enabled ? 1 : 0.3
                                 }
                                 onClicked: {
-                                    modelList.list.startRecognition()
+                                    //modelList.list.startRecognition()
+                                    inspectionSystem.recognize()
                                     objectsArray = modelList.list.currentStatusDocument()
                                     recognizeIssuesArrayFromCode = modelList.list.getRecognizeIssuesResults()
                                     for(var i = 0; i < recognizeIssuesArrayFromCode.length; i++)
@@ -382,11 +410,14 @@ ApplicationWindow {
                     focus: true
                     clip: true
 
-                    ScrollBar.vertical: ScrollBar {visible: true}
+                    ScrollBar.vertical: ScrollBar { visible: true }
 
                     model: DocumentsListModel {
                         id: modelList
                         list: documentsListFromDB
+                        //list: inspectionSystem.getDocListModItem()
+                        //list: inspectionSystem.documentsListMod
+                        //list: prostoBuf
                     }
 
                     delegate: Component {
@@ -505,6 +536,7 @@ ApplicationWindow {
                 height: 40
                 Text {
                     text: qsTr("test text")
+
 //                    text: {
 //                        return modelList.list[documentsListIndexCurrent].pathFile
 //                    }
@@ -727,27 +759,7 @@ ApplicationWindow {
         }
     }
 
-//    ToolBar {
-//        leftPadding: 8
-//        anchors.top: menuBar.bottom
-//        width: parent.width
-//        Flow {
-//            id: flow
-//            //width: parent.width
 
-//            Row {
-//                id: fileRow
-//                ToolButton {
-//                    id: openButton
-//                    text: "\uF115" // icon-folder-open-empty
-//                    font.family: "fontello"
-//                    font.pixelSize: toolButtonIconSizeGeneral
-//                    onClicked: openDialog.open()
-//                }
-
-//            }
-//        }
-//    }
 
     FileDialog {
         id: openDialog
@@ -755,7 +767,7 @@ ApplicationWindow {
 
         onAccepted: {
             console.log("You choose: " + openDialog.fileUrls)
-            documentHand.load(file)
+            inspectionSystem.loadFile(file)
             //Qt.quit()
         }
         onRejected: {
@@ -770,9 +782,5 @@ ApplicationWindow {
         id: errorDialog
     }
 
-    DocumentHandler {
-        id: documentHand
-
-    }
 
 }

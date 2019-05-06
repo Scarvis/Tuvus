@@ -28,7 +28,25 @@ public:
 
     QVector<documentsListItem> items() const;
     QString getItem(const int index);
+    QVector<int> getCurrentStatusDocument() const;
 
+
+    DocumentsListModule(const DocumentsListModule &documents) {
+        mItems = documents.mItems;
+        statusDocuments = documents.statusDocuments;
+        recognizeQuestionsResult = documents.recognizeQuestionsResult;
+        rightAnswersArray = documents.rightAnswersArray;
+        mCurrentIndexClicked = documents.mCurrentIndexClicked;
+    }
+    DocumentsListModule operator=(const DocumentsListModule right){
+        if(this == &right)
+            return *this;
+        mItems = right.mItems;
+        statusDocuments = right.statusDocuments;
+        recognizeQuestionsResult = right.recognizeQuestionsResult;
+        rightAnswersArray = right.rightAnswersArray;
+        mCurrentIndexClicked = right.mCurrentIndexClicked;
+    }
 
 signals:
     void preItemAppend();
@@ -40,14 +58,12 @@ public slots:
     void setIndexClicked(int indexClicked);
     QString getItem();
     QVector<int> currentStatusDocument() const;
+    int getCurrentIndexClicked() const;
     QVector<int> getRecognizeIssuesResults() const;
     QVector <int> getRightAnswersArray() const;
     QString getCurrentCropQuestion(int index);
 
     void startRecognition();
-
-//public Q_SLOTS:
-//    void load(const QUrl &fileUrl);
 
 
 private:

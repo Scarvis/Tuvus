@@ -12,7 +12,8 @@ class RecognitionModule
 public:
     RecognitionModule();
     ~RecognitionModule();
-    RecognitionResults startRecognition(QImage objectRecognition, InfoClass recognitionArea, patternRecognitionModule pattern);
+    RecognitionResults startRecognition(QImage objectRecognition, patternRecognitionModule pattern);
+    QString recognize(QImage objectRecognition);
     void setPatternRecognition(patternRecognitionModule pattern);
     patternRecognitionModule getPatternRecognition() const;
 private:
@@ -24,7 +25,7 @@ private:
     QImage cropImage(QImage original, QRect rect);
     QString recognize(QImage objectRecognition, patternRecognitionModule pattern);
     QString recognize(QImage objectRecognition, InfoClass recognitionArea);
-    QString recognize(QImage objectRecognition);
+
 
 };
 

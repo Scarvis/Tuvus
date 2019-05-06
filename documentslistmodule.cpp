@@ -45,6 +45,11 @@ QString DocumentsListModule::getItem(const int index) //from inspectionsystem
     return mItems.at(index).pathFile;
 }
 
+QVector<int> DocumentsListModule::getCurrentStatusDocument() const //from inspectionsystem
+{
+    return statusDocuments;
+}
+
 int DocumentsListModule::currentIndexClicked()
 {
     return mCurrentIndexClicked;
@@ -75,6 +80,11 @@ QVector<int> DocumentsListModule::currentStatusDocument() const
         return statusDocuments;
     }
     return statusDocuments;
+}
+
+int DocumentsListModule::getCurrentIndexClicked() const //from inspection system
+{
+    return mCurrentIndexClicked;
 }
 
 QVector<int> DocumentsListModule::getRecognizeIssuesResults() const

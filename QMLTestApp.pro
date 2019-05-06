@@ -24,7 +24,8 @@ SOURCES += \
     infoclass.cpp \
     documenthandler.cpp \
     recognitionmodule.cpp \
-    recognitionresults.cpp
+    recognitionresults.cpp \
+    evaluationmodule.cpp
 
 INCLUDEPATH += $$PWD//tesseract-include//tesseract \
            $$PWD//tesseract-include//leptonica \
@@ -58,6 +59,7 @@ HEADERS += \
     infoclass.h \
     documenthandler.h \
     recognitionmodule.h \
-    recognitionresults.h
+    recognitionresults.h \
+    evaluationmodule.h
 
 DISTFILES +=
