@@ -125,7 +125,7 @@ QString DocumentsListModule::getCurrentCropQuestion(int index)
     QImage orig; orig.load(currentPathFile);
     if(!orig.load(currentPathFile)){
         qDebug() << orig << currentPathFile;
-        exit(-1);
+		return QString();
     }
     int it = 10, x = 190;
     if(index - 1 < it) it = index - 1;
@@ -133,7 +133,7 @@ QString DocumentsListModule::getCurrentCropQuestion(int index)
     {
         x += 76;
     }
-    QImage res = cropImage(orig, QRect(x, 120, 75, 60));
+    QImage res = cropImage(orig, QRect(x - 37.5, 120, 130, 60));
      // Some init code to setup the image (e.g. loading a PGN/JPEG, etc.)
     QByteArray bArray;
     QBuffer buffer(&bArray);

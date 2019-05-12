@@ -27,6 +27,7 @@ ApplicationWindow {
     property var recognizeIssuesArrayFromCode: []
     property var rightAnswersArrayFromCode: []
     property var prostoBuf: []
+    property bool recognizeDocumentsBool: false
 
 
     header: MenuBar {
@@ -197,21 +198,35 @@ ApplicationWindow {
     }
 
     ToolBar {
+        id: toolBarHeader
         leftPadding: 8
         anchors.top: menuBar.bottom
         width: parent.width
+        //height: 100
         Flow {
             id: flow
-            //width: parent.width
 
             Row {
                 id: fileRow
+                height: 100
                 ToolButton {
                     id: openButton
                     text: "\uF115" // icon-folder-open-empty
                     font.family: "fontello"
                     font.pixelSize: toolButtonIconSizeGeneral
                     onClicked: openDialog.open()
+                }
+
+                ToolButton {
+                    id: recognizeDocumentsToolButton
+                    text: "\uF289 Распознать" // icon-folder-open-empty
+                    font.family: "fontello"
+                    font.pixelSize: toolButtonIconSizeGeneral
+                    onClicked: {
+                        recognizeDocumentsBool = true
+                        modelList.list.startRecognition()
+                        objectsArray = modelList.list.currentStatusDocument()
+                    } 
                 }
 
             }
@@ -251,7 +266,7 @@ ApplicationWindow {
             }
 
             ToolButton {
-                //id: openFolderButton
+                id: testButton1
                 anchors.top: testButton.bottom
                 text: "\uF115"
                 font.family: "fontello"
@@ -263,11 +278,44 @@ ApplicationWindow {
                     opacity: enabled ? 1 : 0.3
                 }
                 onClicked: {
-                    //openDialog.open()
                     console.log("openFolderButton")
-                    //prostoBuf = inspectionSystem.getDocListItem()
                 }
             }
+            ToolButton {
+                id: testButton2
+                anchors.top: testButton1.bottom
+                text: "\uF177"
+                font.family: "fontello"
+                font.pixelSize: 28
+                background: Rectangle {
+                    implicitWidth: 40
+                    implicitHeight: 40
+                    color: "#EDF3FE"
+                    opacity: enabled ? 1 : 0.3
+                }
+                onClicked: {
+                    if(indexCroppedQuestionImage > 1)
+                        indexCroppedQuestionImage--
+                }
+            }
+            ToolButton {
+                id: testButton3
+                anchors.top: testButton2.bottom
+                text: "\uF178"
+                font.family: "fontello"
+                font.pixelSize: 28
+                background: Rectangle {
+                    implicitWidth: 40
+                    implicitHeight: 40
+                    color: "#EDF3FE"
+                    opacity: enabled ? 1 : 0.3
+                }
+                onClicked: {
+                    if(indexCroppedQuestionImage < 10)
+                        indexCroppedQuestionImage++
+                }
+            }
+
         }
 
         Rectangle {
@@ -356,8 +404,9 @@ ApplicationWindow {
                                     opacity: enabled ? 1 : 0.3
                                 }
                                 onClicked: {
-                                    //modelList.list.startRecognition()
-                                    inspectionSystem.recognize()
+                                    recognizeDocumentsBool = true
+                                    modelList.list.startRecognition()
+                                    //inspectionSystem.recognize()
                                     objectsArray = modelList.list.currentStatusDocument()
                                     recognizeIssuesArrayFromCode = modelList.list.getRecognizeIssuesResults()
                                     for(var i = 0; i < recognizeIssuesArrayFromCode.length; i++)
@@ -527,6 +576,9 @@ ApplicationWindow {
                 }
             }
         }
+//                    text: {
+//                        return modelList.list[documentsListIndexCurrent].pathFile
+//                    }
 
         Column {
             Row {
@@ -537,9 +589,6 @@ ApplicationWindow {
                 Text {
                     text: qsTr("test text")
 
-//                    text: {
-//                        return modelList.list[documentsListIndexCurrent].pathFile
-//                    }
 
                     font.pixelSize: 28
                     anchors.verticalCenter: parent.verticalCenter
@@ -583,21 +632,41 @@ ApplicationWindow {
             }
 
             Row {
-                Rectangle {
-                    id: closeUpDocument
-                    width: 1100
-                    //width: 910
-                    height: (mainWindow.height / 8) * 7
-                    anchors.topMargin: 5
-                    antialiasing: true
-                    Image {
-                        width: parent.width - 10
-                        anchors.verticalCenter: closeUpDocument.verticalCenter
-                        anchors.horizontalCenter: closeUpDocument.horizontalCenter
-                        anchors.leftMargin: 5
-                        anchors.rightMargin: 5
-                        source: {
-                            closeUpDocumentImagePath
+                Column {
+                    Rectangle {
+                        id: closeUpDocumentRecognizeResult
+                        width: 1100
+                        height: 150
+                        color: "red"
+                    }
+                    Rectangle {
+                        id: closeUpDocument
+                        width: 1100
+                        height: 800
+                        anchors.topMargin: 5
+                        antialiasing: true
+                        Image {
+                            width: parent.width
+                            height: parent.height
+                            anchors.verticalCenter: closeUpDocument.verticalCenter
+                            anchors.horizontalCenter: closeUpDocument.horizontalCenter
+                            anchors.leftMargin: 5
+                            anchors.rightMargin: 5
+                            mipmap: true
+                            antialiasing: true
+                            smooth: true
+                            fillMode: Image.PreserveAspectFit
+                            source: {
+                                if(recognizeDocumentsBool){
+                                    var pf = modelList.list.getCurrentCropQuestion(indexCroppedQuestionImage)
+                                    return pf
+                                }
+                                else {
+                                    return closeUpDocumentImagePath
+                                }
+
+                            }
+                            
                         }
                     }
                 }

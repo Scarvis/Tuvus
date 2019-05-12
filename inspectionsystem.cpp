@@ -3,7 +3,7 @@
 
 inspectionSystem::inspectionSystem()
 {
-    documentsListModul.append({"Example_2-1.PNG", "example"});
+    //documentsListModul.append({"Example_2-1.PNG", "example"});
 }
 
 inspectionSystem::inspectionSystem(QString str)
@@ -79,12 +79,12 @@ QVector<int> inspectionSystem::getCurrentStatusDocument() const
     return documentsListModule.getCurrentStatusDocument();
 }
 
-QVector<documentsListItem> inspectionSystem::getDocListItem() const
-{
-    return documentsListModul;
-}
-
-DocumentsListModule inspectionSystem::getDocListModItem() const
-{
-    return documentsListMod;
-}
+//QVector<documentsListItem> inspectionSystem::getDocListItem() const
+//{
+//    return documentsListModul;
+//}
+//
+//DocumentsListModule inspectionSystem::getDocListModItem() const
+//{
+//    return documentsListMod;
+//}
