@@ -21,14 +21,19 @@ class DocumentsListModule : public QObject
     Q_PROPERTY(QVector<int> statusDocument READ currentStatusDocument CONSTANT)
     Q_PROPERTY(QVector<int> recognizeQuestionsResults READ getRecognizeIssuesResults CONSTANT)
     Q_PROPERTY(QVector<int> rightAnswersArray READ getRightAnswersArray CONSTANT)
+	Q_PROPERTY(QVector<documentsListItem> ITEMS READ items CONSTANT)
+	Q_PROPERTY(QVector<QString> pathFiles READ getPathFilesItems CONSTANT) 
 public:
     explicit DocumentsListModule(QObject *parent = nullptr);
 
     bool setItemAt(int index, const documentsListItem &item);
 
-    QVector<documentsListItem> items() const;
+
     QString getItem(const int index);
     QVector<int> getCurrentStatusDocument() const;
+	void appendItem(documentsListItem item);
+	void appendItem(QString item);
+	void clear();
 
 
     DocumentsListModule(const DocumentsListModule &documents) {
@@ -38,7 +43,8 @@ public:
         rightAnswersArray = documents.rightAnswersArray;
         mCurrentIndexClicked = documents.mCurrentIndexClicked;
     }
-    DocumentsListModule operator=(const DocumentsListModule right){
+    
+	DocumentsListModule operator=(const DocumentsListModule right){
         if(this == &right)
             return *this;
         mItems = right.mItems;
@@ -62,9 +68,9 @@ public slots:
     QVector<int> getRecognizeIssuesResults() const;
     QVector <int> getRightAnswersArray() const;
     QString getCurrentCropQuestion(int index);
-
     void startRecognition();
-
+	QVector<documentsListItem> items() const;
+	QVector<QString> getPathFilesItems() const;
 
 private:
     QImage cropImage(QImage original, QRect rect);

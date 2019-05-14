@@ -21,6 +21,7 @@ public:
     int isOk() const;
     int setTestPatternRecognition();
     QVector<InfoClass> getRecognitionArea();
+	int getSizeRecognitionArea() const;
     patternRecognitionModule operator=(const patternRecognitionModule right){
         if(this == &right){
             return *this;

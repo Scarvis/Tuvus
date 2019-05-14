@@ -3,7 +3,7 @@
 
 patternRecognitionModule::patternRecognitionModule()
 {
-
+	setTestPatternRecognition();
 }
 
 patternRecognitionModule::patternRecognitionModule(QString str)
@@ -107,4 +107,9 @@ int patternRecognitionModule::setTestPatternRecognition()
 QVector<InfoClass> patternRecognitionModule::getRecognitionArea()
 {
     return recognitionArea;
+}
+
+int patternRecognitionModule::getSizeRecognitionArea() const
+{
+	return recognitionArea.size();
 }

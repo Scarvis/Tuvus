@@ -10,9 +10,11 @@ public:
     RecognitionResults();
     QString outputFile();
     void addRecognitionResults(QString str);
+	QString getRecognitionResultsString() const;
+	void clear();
 private:
-    QString outputString;
-    QString errorString;
+    QString outputString = "";
+    QString errorString = "";
     bool isOkLast = true;
 };
 

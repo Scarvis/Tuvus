@@ -33,6 +33,16 @@ QVector<documentsListItem> DocumentsListModule::items() const
     return mItems;
 }
 
+QVector<QString> DocumentsListModule::getPathFilesItems() const
+{
+	QVector<QString> res;
+	for (int i = 0; i < mItems.size(); i++) 
+	{
+		res.append(mItems[i].pathFile);
+	}
+	return res;
+}
+
 QString DocumentsListModule::getItem(const int index) //from inspectionsystem
 {
     if(mItems.count() <= 0)
@@ -48,6 +58,26 @@ QString DocumentsListModule::getItem(const int index) //from inspectionsystem
 QVector<int> DocumentsListModule::getCurrentStatusDocument() const //from inspectionsystem
 {
     return statusDocuments;
+}
+
+void DocumentsListModule::appendItem(documentsListItem item)  //from inspectionsystem
+{
+	mItems.append(item);
+}
+
+void DocumentsListModule::appendItem(QString item)
+{
+	mItems.append({ item, "null"});
+}
+
+void DocumentsListModule::clear()
+{
+	mItems.clear();
+	int mCurrentIndexClicked = 0;
+	QString currentPathFile = "Example_2-1.PNG";
+	statusDocuments.clear();
+	recognizeQuestionsResult.clear();
+	rightAnswersArray.clear();
 }
 
 int DocumentsListModule::currentIndexClicked()
@@ -143,6 +173,7 @@ QString DocumentsListModule::getCurrentCropQuestion(int index)
     image.append(QString::fromLatin1(bArray.toBase64().data()));
     return image;
 }
+
 
 
 

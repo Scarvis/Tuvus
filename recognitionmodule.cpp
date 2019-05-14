@@ -20,8 +20,6 @@ RecognitionModule::~RecognitionModule()
 
 QImage RecognitionModule::cropImage(QImage original, QRect rect)
 {
-    //QRect rect(10, 20, 30, 40);
-    //QImage original('image.png');
     QImage cropped = original.copy(rect);
     return cropped;
 }
@@ -129,12 +127,9 @@ PIX* RecognitionModule::qImage2PIX(QImage& qImage) {
 QString RecognitionModule::recognize(QImage objectRecognition)
 {
     Pix *pixImage = qImage2PIX(objectRecognition);
-    QString output = "";
     recognitionApi->SetImage(pixImage);
-    output = recognitionApi->GetUTF8Text();
-    return output;
+    return recognitionApi->GetUTF8Text();
 }
-
 
 
 QString RecognitionModule::recognize(QImage objectRecognition, patternRecognitionModule pattern)

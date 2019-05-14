@@ -14,7 +14,6 @@
 #include "documenthandler.h"
 
 
-
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -33,9 +32,9 @@ int main(int argc, char *argv[])
                                                     QStringLiteral("should not be created in QML"));
 
 
-    DocumentsListModule documentsListFromDB;
+    
 
-
+	DocumentsListModule documentsListFromDB;
 
     QQmlApplicationEngine engine;
 

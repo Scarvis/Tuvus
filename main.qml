@@ -23,11 +23,13 @@ ApplicationWindow {
     property int currentQuestionCrop: 0
     property var objectsArray: []
     property int indexCroppedQuestionImage: 1
+    property int maxIndexCroppedQuestionImage: 1
     property int toolButtonIconSizeGeneral: 16
     property var recognizeIssuesArrayFromCode: []
     property var rightAnswersArrayFromCode: []
     property var prostoBuf: []
     property bool recognizeDocumentsBool: false
+    property var blyat: []
 
 
     header: MenuBar {
@@ -218,15 +220,28 @@ ApplicationWindow {
                 }
 
                 ToolButton {
-                    id: recognizeDocumentsToolButton
-                    text: "\uF289 Распознать" // icon-folder-open-empty
+                    id: recognizeFolderDocumentsToolButton
+                    text: "\uF289 Распознать всю папку" // icon-folder-open-empty
                     font.family: "fontello"
                     font.pixelSize: toolButtonIconSizeGeneral
                     onClicked: {
-                        recognizeDocumentsBool = true
                         modelList.list.startRecognition()
                         objectsArray = modelList.list.currentStatusDocument()
+                        blyat = documentsListFromDB.getPathFilesItems()
+                        console.log(blyat, blyat.length)
+                        inspectionSystem.setDocumentsList(blyat, documentsListIndexCurrent)
+                        inspectionSystem.recognizeCurrentFolder()
+                        maxIndexCroppedQuestionImage = inspectionSystem.getMaxIndexCroppedQuestionImage()
+                        recognizeDocumentsBool = true
                     } 
+                }
+
+                ToolButton {
+                    id: recognizeFileDocumentToolButton
+                    text: "\uF289\uE800 Распознать файл" // icon-folder-open-empty
+                    font.family: "fontello"
+                    font.pixelSize: toolButtonIconSizeGeneral
+                   
                 }
 
             }
@@ -248,6 +263,7 @@ ApplicationWindow {
         y: 35
 
         Rectangle {
+            id: testButtonsRectangle
             width: 40
             height: mainWindow.height
             //Layout.minimumHeight: 200
@@ -259,7 +275,6 @@ ApplicationWindow {
                 height: 40
                 text: qsTr("test")
                 onClicked: {
-                    //documentsListFromDB.appendItem();
                     console.log("button clicked " + (++number))
                     inspectionSystem.loadFolder("bsl")
                 }
@@ -337,7 +352,6 @@ ApplicationWindow {
                 anchors.horizontalCenter: documents.horizontalCenter
                 topPadding: 10
             }
-           //Column {
 
             Rectangle {
                 anchors.top: pagesTextId.bottom
@@ -405,6 +419,10 @@ ApplicationWindow {
                                 }
                                 onClicked: {
                                     recognizeDocumentsBool = true
+                                    inspectionSystem.setDocumentsList(modelList.list.items(), documentsListIndexCurrent)
+                                    inspectionSystem.recognizeCurrentFolder()
+                                    maxIndexCroppedQuestionImage = inspectionSystem.getMaxIndexCroppedQuestionImage()
+
                                     modelList.list.startRecognition()
                                     //inspectionSystem.recognize()
                                     objectsArray = modelList.list.currentStatusDocument()
@@ -435,7 +453,7 @@ ApplicationWindow {
                     }
                 }
             }
-            //}
+
             Rectangle {
                 anchors.bottom: mainWindow.bottom
                 anchors.left: parent.left
@@ -445,8 +463,6 @@ ApplicationWindow {
                 color: "#EDF3FE"
                 ListView {
                     id: documentsList
-                    //y: 30
-                    //anchors.top: pagesTextId.bottom
                     anchors.bottom: mainWindow.bottom
                     anchors.left: parent.left
                     anchors.right: parent.right
@@ -464,9 +480,6 @@ ApplicationWindow {
                     model: DocumentsListModel {
                         id: modelList
                         list: documentsListFromDB
-                        //list: inspectionSystem.getDocListModItem()
-                        //list: inspectionSystem.documentsListMod
-                        //list: prostoBuf
                     }
 
                     delegate: Component {
@@ -638,6 +651,56 @@ ApplicationWindow {
                         width: 1100
                         height: 150
                         color: "red"
+                        
+
+                        RowLayout {
+                            anchors.fill: parent
+
+                            ToolButton {
+                                text: "\uF177"
+                                font.family: "fontello"
+                                font.pixelSize: 22
+                                anchors.right: closeUpDocumentRecognizeResultText.left
+                                anchors.rightMargin: 25
+                                anchors.verticalCenter: closeUpDocumentRecognizeResult.verticalCenter
+                                onClicked: {
+                                    if(indexCroppedQuestionImage > 1)
+                                        indexCroppedQuestionImage--
+                                    console.log("Left tb. ", "x = ", x, "y = ", y)
+                                }
+                            }
+
+                            Text {
+                                id: closeUpDocumentRecognizeResultText
+                                text: {
+                                    if(!recognizeDocumentsBool) return "nil"
+                                    var pf = inspectionSystem.getCurrentCloseUpDocumentRecognizeResult(indexCroppedQuestionImage)
+                                    if(pf.length < 1)
+                                        pf = "nothing"
+                                    console.log("Text. ", "x = ", x, "y = ", y)
+                                    return pf
+                                }
+                                horizontalAlignment: Qt.AlignHCenter
+                                verticalAlignment: Qt.AlignVCenter
+                                anchors.horizontalCenter: closeUpDocumentRecognizeResult.horizontalCenter
+                                anchors.verticalCenter: closeUpDocumentRecognizeResult.verticalCenter
+                                font.pixelSize: 22
+
+                            }
+                            ToolButton {
+                                text: "\uF178"
+                                font.family: "fontello"
+                                font.pixelSize: 22
+                                anchors.left: closeUpDocumentRecognizeResultText.right
+                                anchors.leftMargin: 25
+                                anchors.verticalCenter: closeUpDocumentRecognizeResult.verticalCenter
+                                onClicked: {
+                                    if(indexCroppedQuestionImage < maxIndexCroppedQuestionImage)
+                                        indexCroppedQuestionImage++
+                                    console.log("Right tb. ", "x = ", x, "y = ", y)
+                                }
+                            }
+                        }
                     }
                     Rectangle {
                         id: closeUpDocument
@@ -658,7 +721,7 @@ ApplicationWindow {
                             fillMode: Image.PreserveAspectFit
                             source: {
                                 if(recognizeDocumentsBool){
-                                    var pf = modelList.list.getCurrentCropQuestion(indexCroppedQuestionImage)
+                                    var pf = documentsListFromDB.getCurrentCropQuestion(indexCroppedQuestionImage)
                                     return pf
                                 }
                                 else {
