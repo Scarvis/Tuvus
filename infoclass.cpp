@@ -48,6 +48,11 @@ int InfoClass::height() const
     return Height;
 }
 
+int InfoClass::isQuest() const
+{
+	return IsQuest;
+}
+
 QVector<InfoClass> InfoClass::answers() const
 {
     return Answers;
@@ -81,6 +86,11 @@ void InfoClass::setWidth(int Width)
 void InfoClass::setHeight(int Height)
 {
     this->Height = Height;
+}
+
+void InfoClass::setQuest(int IsQuest)
+{
+	this->IsQuest = IsQuest;
 }
 
 void InfoClass::setAnswers(QVector<InfoClass> Answers)

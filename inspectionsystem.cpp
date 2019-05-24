@@ -4,6 +4,7 @@
 inspectionSystem::inspectionSystem()
 {
     //documentsListModul.append({"Example_2-1.PNG", "example"});
+
 }
 
 inspectionSystem::inspectionSystem(QString str)
@@ -11,7 +12,7 @@ inspectionSystem::inspectionSystem(QString str)
     if(str == "test")
     {
         if(patternRecModule.setTestPatternRecognition() == -1)
-            qDebug() << "inspect";
+            qDebug() << "test pattern recognition not init";
     }
 }
 
@@ -60,17 +61,46 @@ void inspectionSystem::recognizeCurrentFolder()
 
     QVector<documentsListItem> currentArrayObjectRecognition = documentsListModule.items();
     QVector<RecognitionResults> recResult;
-    for (int i = 0; i < currentArrayObjectRecognition.size(); ++i) {
+	QVector<InfoClass> recognitionArea = patternRecModule.getRecognitionArea();
+    for (int i = 0; i < currentArrayObjectRecognition.size(); ++i) 
+	{
         QImage res(currentArrayObjectRecognition[i].pathFile);
-        RecognitionResults recognitionResults = recognitionModule.startRecognition(
+		for (int j = 0; j < recognitionArea.size(); j++) 
+		{
+			if (recognitionArea[j].isQuest()) 
+			{
+				QVector<InfoClass> answerRecArea = patternRecModule.getAnswerRecognitionArea();
+				for (int answerIndex = 0; answerIndex < answerRecArea.size(); answerIndex++)
+				{
+					RecognitionResults recognitionResults = recognitionModule.startRecognition(
+						res,
+						recognitionArea[j],
+						answerRecArea[answerIndex]
+					);
+					recResult.append(recognitionResults);
+				}
+			}
+			else
+			{
+
+			}
+		}
+        /*RecognitionResults recognitionResults = recognitionModule.startRecognition(
                     res,
                     patternRecModule
                     );
-        recResult.append(recognitionResults);
+        recResult.append(recognitionResults);*/
 		break;
     }
+	QFile file("testtxt.txt");
+	file.open(QIODevice::WriteOnly | QIODevice::Text);
+	for (int i = 0; i < recResult.size(); i++) {
+		file.write(recResult[i].outputFile().toLocal8Bit());
+	}
+	file.close();
 	maxIndexCroppedQuestionImage = patternRecModule.getSizeRecognitionArea();
 	currentRecognitionResults = recResult;
+	currentRecognitionDocument.load(currentArrayObjectRecognition[0].pathFile);
     lastRecognitionFolder = currentFolderUrl;
 }
 
@@ -107,5 +137,24 @@ bool inspectionSystem::setDocumentsList(QVector<QString> mItems, int currentInde
 int inspectionSystem::getMaxIndexCroppedQuestionImage() const
 {
 	return maxIndexCroppedQuestionImage;
+}
+
+QString inspectionSystem::getCurrentCropQuestion(int index) //QML
+{
+	QImage orig(documentsListModule.getItem());
+	if (orig.isNull()) {
+		qDebug() << "dont download image, getCurrentCropQuestion";
+		return QString();
+	}
+	
+	// Some init code to setup the image (e.g. loading a PGN/JPEG, etc.)
+	QImage res = documentsListModule.cropImage(orig, patternRecModule.getRecognitionAreaAt(index));
+	QByteArray bArray;
+	QBuffer buffer(&bArray);
+	buffer.open(QIODevice::WriteOnly);
+	res.save(&buffer, "JPG");
+	QString image("data:image/jpg;base64,");
+	image.append(QString::fromLatin1(bArray.toBase64().data()));
+	return image;
 }
 

@@ -63,6 +63,7 @@ int patternRecognitionModule::setTestPatternRecognition()
         qDebug()<<"JSON object is empty.";
         exit(4);
     }
+
     QVariantMap jsonMapRoot = jsonObj.toVariantMap();
     countQuestion = jsonMapRoot["countQuestion"].toInt();
     numbersOfReplies = jsonMapRoot["numbersOfReplies"].toInt();
@@ -73,9 +74,17 @@ int patternRecognitionModule::setTestPatternRecognition()
         QVariantMap jsonMap = jsonList[i].toMap();
         QStringList keyList = jsonMap.keys();
         InfoClass curInfo = jsonParse.setTestData(jsonMap, keyList);
-        questionsAnswersInfo.append(curInfo);
+		curInfo.setQuest(1);
+		recognitionArea.append(curInfo);
     }
-    recognitionArea.append(InfoClass(190, 120, 75, 19));
+	jsonList = jsonMapRoot["answers"].toList();
+	for (int i = 0; i < jsonList.size(); i++) {
+		QVariantMap jsonMap = jsonList[i].toMap();
+		QStringList keyList = jsonMap.keys();
+		InfoClass curInfo = jsonParse.setTestData(jsonMap, keyList);
+		questionsAnswersInfo.append(curInfo);
+	}
+    
     //    jsonList.clear();
     //    jsonList = jsonMapRoot["answers"].toList();
     //    for (int i = 0; i < jsonList.size(); i++) {
@@ -99,14 +108,24 @@ int patternRecognitionModule::setTestPatternRecognition()
 //        }
 //    }
 
-
-
     return 1;
 }
 
-QVector<InfoClass> patternRecognitionModule::getRecognitionArea()
+QVector<InfoClass> patternRecognitionModule::getRecognitionArea() const
 {
     return recognitionArea;
+}
+
+InfoClass patternRecognitionModule::getRecognitionAreaAt(int index) const
+{
+	if (index < 0 || index - 1 >= recognitionArea.size())
+		return InfoClass();
+	return recognitionArea[index];
+}
+
+QVector<InfoClass> patternRecognitionModule::getAnswerRecognitionArea() const
+{
+	return questionsAnswersInfo;
 }
 
 int patternRecognitionModule::getSizeRecognitionArea() const

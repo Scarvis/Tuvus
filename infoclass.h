@@ -14,6 +14,7 @@ public:
     int y() const;
     int width() const;
     int height() const;
+	int isQuest() const; //bool
     QVector<InfoClass> answers() const;
     QRect getQRect();
     void setNumber(int Number);
@@ -21,12 +22,13 @@ public:
     void setY(int Y);
     void setWidth(int Width);
     void setHeight(int Height);
+	void setQuest(int IsQuest);
     void setAnswers(QVector<InfoClass> Answers);
 private:
     int Number;
     int X, Y, Width, Height;
+	int IsQuest = 0;
     QVector<InfoClass> Answers;
-
 };
 
 #endif // INFOCLASS_H

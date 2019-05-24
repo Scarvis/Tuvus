@@ -43,18 +43,6 @@ QVector<QString> DocumentsListModule::getPathFilesItems() const
 	return res;
 }
 
-QString DocumentsListModule::getItem(const int index) //from inspectionsystem
-{
-    if(mItems.count() <= 0)
-        return "";
-    if(index > mItems.count())
-    {
-        mCurrentIndexClicked = 0;
-        return "";
-    }
-    return mItems.at(index).pathFile;
-}
-
 QVector<int> DocumentsListModule::getCurrentStatusDocument() const //from inspectionsystem
 {
     return statusDocuments;
@@ -95,12 +83,19 @@ QString DocumentsListModule::getItem()
 {
     if(mItems.count() <= 0)
         return "";
-    if(mCurrentIndexClicked > mItems.count())
+    if(mCurrentIndexClicked >= mItems.count())
     {
         mCurrentIndexClicked = 0;
         return "";
     }
     return mItems.at(mCurrentIndexClicked).pathFile;
+}
+
+QString DocumentsListModule::getItem(int index) const
+{
+	if (index < 0 || index >= mItems.size() - 1)
+		return QString();
+	return mItems.at(index).pathFile;
 }
 
 QVector<int> DocumentsListModule::currentStatusDocument() const
@@ -144,10 +139,15 @@ void DocumentsListModule::startRecognition()
 
 QImage DocumentsListModule::cropImage(QImage original, QRect rect)
 {
-    //QRect rect(10, 20, 30, 40);
-    //QImage original('image.png');
     QImage cropped = original.copy(rect);
     return cropped;
+}
+
+QImage DocumentsListModule::cropImage(QImage original, InfoClass infoClass)
+{
+	QRect rect = infoClass.getQRect();
+	QImage cropped = original.copy(rect);
+	return cropped;
 }
 
 QString DocumentsListModule::getCurrentCropQuestion(int index)

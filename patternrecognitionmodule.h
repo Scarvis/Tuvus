@@ -20,7 +20,9 @@ public:
     int setNewPatternRecognition(QString str);
     int isOk() const;
     int setTestPatternRecognition();
-    QVector<InfoClass> getRecognitionArea();
+    QVector<InfoClass> getRecognitionArea() const;
+	InfoClass getRecognitionAreaAt(int index) const;
+	QVector<InfoClass> getAnswerRecognitionArea() const;
 	int getSizeRecognitionArea() const;
     patternRecognitionModule operator=(const patternRecognitionModule right){
         if(this == &right){

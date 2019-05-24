@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_inspectionSystem_t {
-    QByteArrayData data[19];
-    char stringdata0[306];
+    QByteArrayData data[20];
+    char stringdata0[329];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -50,7 +50,8 @@ QT_MOC_LITERAL(14, 214, 16), // "QVector<QString>"
 QT_MOC_LITERAL(15, 231, 6), // "mItems"
 QT_MOC_LITERAL(16, 238, 19), // "currentIndexClicked"
 QT_MOC_LITERAL(17, 258, 31), // "getMaxIndexCroppedQuestionImage"
-QT_MOC_LITERAL(18, 290, 15) // "statusDocuments"
+QT_MOC_LITERAL(18, 290, 22), // "getCurrentCropQuestion"
+QT_MOC_LITERAL(19, 313, 15) // "statusDocuments"
 
     },
     "inspectionSystem\0loadFile\0\0fileUrl\0"
@@ -61,7 +62,7 @@ QT_MOC_LITERAL(18, 290, 15) // "statusDocuments"
     "setDocumentsList\0QVector<QString>\0"
     "mItems\0currentIndexClicked\0"
     "getMaxIndexCroppedQuestionImage\0"
-    "statusDocuments"
+    "getCurrentCropQuestion\0statusDocuments"
 };
 #undef QT_MOC_LITERAL
 
@@ -71,23 +72,24 @@ static const uint qt_meta_data_inspectionSystem[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
-       1,   80, // properties
+      10,   14, // methods
+       1,   88, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   59,    2, 0x0a /* Public */,
-       4,    1,   62,    2, 0x0a /* Public */,
-       6,    0,   65,    2, 0x0a /* Public */,
-       7,    0,   66,    2, 0x0a /* Public */,
-       8,    1,   67,    2, 0x0a /* Public */,
-      10,    0,   70,    2, 0x0a /* Public */,
-      12,    1,   71,    2, 0x0a /* Public */,
-      13,    2,   74,    2, 0x0a /* Public */,
-      17,    0,   79,    2, 0x0a /* Public */,
+       1,    1,   64,    2, 0x0a /* Public */,
+       4,    1,   67,    2, 0x0a /* Public */,
+       6,    0,   70,    2, 0x0a /* Public */,
+       7,    0,   71,    2, 0x0a /* Public */,
+       8,    1,   72,    2, 0x0a /* Public */,
+      10,    0,   75,    2, 0x0a /* Public */,
+      12,    1,   76,    2, 0x0a /* Public */,
+      13,    2,   79,    2, 0x0a /* Public */,
+      17,    0,   84,    2, 0x0a /* Public */,
+      18,    1,   85,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void, QMetaType::QUrl,    3,
@@ -99,9 +101,10 @@ static const uint qt_meta_data_inspectionSystem[] = {
     QMetaType::QString, QMetaType::Int,    9,
     QMetaType::Bool, 0x80000000 | 14, QMetaType::Int,   15,   16,
     QMetaType::Int,
+    QMetaType::QString, QMetaType::Int,    9,
 
  // properties: name, type, flags
-      18, 0x80000000 | 11, 0x00095409,
+      19, 0x80000000 | 11, 0x00095409,
 
        0        // eod
 };
@@ -126,6 +129,8 @@ void inspectionSystem::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
         case 8: { int _r = _t->getMaxIndexCroppedQuestionImage();
             if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
+        case 9: { QString _r = _t->getCurrentCropQuestion((*reinterpret_cast< int(*)>(_a[1])));
+            if (_a[0]) *reinterpret_cast< QString*>(_a[0]) = std::move(_r); }  break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -191,13 +196,13 @@ int inspectionSystem::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 10;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 9)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 10;
     }
 #ifndef QT_NO_PROPERTIES
    else if (_c == QMetaObject::ReadProperty || _c == QMetaObject::WriteProperty

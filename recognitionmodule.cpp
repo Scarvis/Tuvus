@@ -3,6 +3,9 @@
 #include "infoclass.h"
 #include <QImage>
 #include <QBuffer>
+#include <opencv2/opencv.hpp>
+
+using namespace cv;
 
 RecognitionModule::RecognitionModule()
 {
@@ -36,6 +39,31 @@ RecognitionResults RecognitionModule::startRecognition(QImage objectRecognition,
         res.addRecognitionResults(result);
     }
     return res;
+}
+
+RecognitionResults RecognitionModule::startRecognition(QImage objectRecognition, InfoClass recognitionArea)
+{
+	RecognitionResults recResults;
+	QRect rect = recognitionArea.getQRect();
+	QImage recImage = cropImage(objectRecognition, rect);
+	QString result = recognize(recImage);
+	recResults.addRecognitionResults(result);
+	return recResults;
+}
+
+RecognitionResults RecognitionModule::startRecognition(QImage objectRecognition, InfoClass recognitionArea, InfoClass answerRecArea) 
+{
+	RecognitionResults recResults;
+	QRect rect = recognitionArea.getQRect();
+	QRect aRect = answerRecArea.getQRect();
+	aRect.setX(rect.x() + aRect.x());
+	aRect.setY(rect.y() + aRect.y());
+	aRect.setWidth(answerRecArea.width());
+	aRect.setHeight(answerRecArea.height());
+	QImage recImage = cropImage(objectRecognition, aRect);
+	QString result = recognize(recImage);
+	recResults.addRecognitionResults(result);
+	return recResults;
 }
 
 void RecognitionModule::setPatternRecognition(patternRecognitionModule pattern)
@@ -131,7 +159,6 @@ QString RecognitionModule::recognize(QImage objectRecognition)
     return recognitionApi->GetUTF8Text();
 }
 
-
 QString RecognitionModule::recognize(QImage objectRecognition, patternRecognitionModule pattern)
 {
     QString output = "";
@@ -144,4 +171,28 @@ QString RecognitionModule::recognize(QImage objectRecognition, InfoClass recogni
     QString output = "";
 
     return output;
+}
+
+QString RecognitionModule::recognize(QString objectRecognitionPathFile, InfoClass recognitionArea)
+{
+	return QString();
+}
+
+void RecognitionModule::preliminaryProcessing(std::string objRecogPath)
+{
+	Mat image = imread(objRecogPath);
+	if (image.empty())
+	{
+		qDebug() << "Could not open or find the image";
+		return;
+	}
+	std::string windowName = "The Guitar";
+	namedWindow(windowName); // Create a window
+
+	//imshow(windowName, image); // Show our image inside the created window.
+
+	//waitKey(0); // Wait for any keystroke in the window
+
+	//destroyWindow(windowName);
+
 }

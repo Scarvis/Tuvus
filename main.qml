@@ -160,6 +160,9 @@ ApplicationWindow {
         }
         Menu {
             title: qsTr("Распознавание")
+            Action {
+                text: qsTr("Дебаг распознавания")
+            }
         }
         Menu {
             title: qsTr("Справка")
@@ -225,8 +228,8 @@ ApplicationWindow {
                     font.family: "fontello"
                     font.pixelSize: toolButtonIconSizeGeneral
                     onClicked: {
-                        modelList.list.startRecognition()
-                        objectsArray = modelList.list.currentStatusDocument()
+                        documentsListFromDB.startRecognition()
+                        objectsArray = documentsListFromDB.currentStatusDocument()
                         blyat = documentsListFromDB.getPathFilesItems()
                         console.log(blyat, blyat.length)
                         inspectionSystem.setDocumentsList(blyat, documentsListIndexCurrent)
@@ -418,22 +421,21 @@ ApplicationWindow {
                                     opacity: enabled ? 1 : 0.3
                                 }
                                 onClicked: {
-                                    recognizeDocumentsBool = true
-                                    inspectionSystem.setDocumentsList(modelList.list.items(), documentsListIndexCurrent)
+                                    documentsListFromDB.startRecognition()
+                                    objectsArray = documentsListFromDB.currentStatusDocument()
+                                    blyat = documentsListFromDB.getPathFilesItems()
+                                    console.log(blyat, blyat.length)
+                                    inspectionSystem.setDocumentsList(blyat, documentsListIndexCurrent)
                                     inspectionSystem.recognizeCurrentFolder()
+                                    
+                                    // recognizeIssuesArrayFromCode = modelList.list.getRecognizeIssuesResults()
+                                    // for(var i = 0; i < recognizeIssuesArrayFromCode.length; i++)
+                                    //     recognizedIssuesListViewModel.append({recognizedIssues: "Вопрос №" + (i+1) + ": " + recognizeIssuesArrayFromCode[i]})
+                                    // rightAnswersArrayFromCode = modelList.list.getRightAnswersArray()
+                                    // for(var k = 0; k < recognizeIssuesArrayFromCode.length; k++)
+                                    //     rightAnswersListViewModel.append({rightAnswer: "Вопрос №" + (k+1) + ": " + rightAnswersArrayFromCode[k]})
                                     maxIndexCroppedQuestionImage = inspectionSystem.getMaxIndexCroppedQuestionImage()
-
-                                    modelList.list.startRecognition()
-                                    //inspectionSystem.recognize()
-                                    objectsArray = modelList.list.currentStatusDocument()
-                                    recognizeIssuesArrayFromCode = modelList.list.getRecognizeIssuesResults()
-                                    for(var i = 0; i < recognizeIssuesArrayFromCode.length; i++)
-                                        recognizedIssuesListViewModel.append({recognizedIssues: "Вопрос №" + (i+1) + ": " + recognizeIssuesArrayFromCode[i]})
-                                    rightAnswersArrayFromCode = modelList.list.getRightAnswersArray()
-                                    for(var k = 0; k < recognizeIssuesArrayFromCode.length; k++)
-                                        rightAnswersListViewModel.append({rightAnswer: "Вопрос №" + (k+1) + ": " + rightAnswersArrayFromCode[k]})
-
-
+                                    recognizeDocumentsBool = true
                                 }
                             }
 
@@ -680,8 +682,8 @@ ApplicationWindow {
                                     console.log("Text. ", "x = ", x, "y = ", y)
                                     return pf
                                 }
-                                horizontalAlignment: Qt.AlignHCenter
-                                verticalAlignment: Qt.AlignVCenter
+                                //horizontalAlignment: Qt.AlignHCenter
+                                //verticalAlignment: Qt.AlignVCenter
                                 anchors.horizontalCenter: closeUpDocumentRecognizeResult.horizontalCenter
                                 anchors.verticalCenter: closeUpDocumentRecognizeResult.verticalCenter
                                 font.pixelSize: 22
@@ -721,7 +723,10 @@ ApplicationWindow {
                             fillMode: Image.PreserveAspectFit
                             source: {
                                 if(recognizeDocumentsBool){
-                                    var pf = documentsListFromDB.getCurrentCropQuestion(indexCroppedQuestionImage)
+                                    var pf = inspectionSystem.getCurrentCropQuestion(indexCroppedQuestionImage - 1)
+                                    if(pf.length == 0)
+                                        pf = documentsListFromDB.getCurrentCropQuestion(indexCroppedQuestionImage)
+                                    
                                     return pf
                                 }
                                 else {
@@ -729,7 +734,16 @@ ApplicationWindow {
                                 }
 
                             }
-                            
+                        }
+                        Rectangle {
+                            x: 190
+                            y: 120
+                            width: 75
+                            height: 60 
+                            border {
+                                color: "green"
+                                width: 2
+                            }
                         }
                     }
                 }

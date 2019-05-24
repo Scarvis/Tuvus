@@ -28,7 +28,7 @@ public Q_SLOTS:
 	QString getCurrentCloseUpDocumentRecognizeResult(int index) const;
 	bool setDocumentsList(QVector<QString> mItems, int currentIndexClicked);
 	int getMaxIndexCroppedQuestionImage() const;
-
+	QString getCurrentCropQuestion(int index); //QML
 private:
     patternRecognitionModule patternRecModule;
     RecognitionModule recognitionModule;
@@ -42,6 +42,7 @@ private:
     QUrl currentFolderUrl;
     QUrl lastRecognitionFolder = QUrl::fromLocalFile("21.PNG");
     QUrl lastRecognitionFile;
+	QImage currentRecognitionDocument;
     int testP = 0;
 	int maxIndexCroppedQuestionImage = 1;
 };

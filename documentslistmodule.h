@@ -7,6 +7,7 @@
 #include <QImage>
 #include <QBuffer>
 #include <QUrl>
+#include "infoclass.h"
 
 struct documentsListItem
 {
@@ -29,11 +30,13 @@ public:
     bool setItemAt(int index, const documentsListItem &item);
 
 
-    QString getItem(const int index);
+	QString getItem(int index) const;
     QVector<int> getCurrentStatusDocument() const;
 	void appendItem(documentsListItem item);
 	void appendItem(QString item);
 	void clear();
+	QImage cropImage(QImage original, QRect rect);
+	QImage cropImage(QImage original, InfoClass infoClass);
 
 
     DocumentsListModule(const DocumentsListModule &documents) {
@@ -63,7 +66,7 @@ public slots:
     int currentIndexClicked();
     void setIndexClicked(int indexClicked);
     QString getItem();
-    QVector<int> currentStatusDocument() const;
+    QVector<int> currentStatusDocument() const; //QML
     int getCurrentIndexClicked() const;
     QVector<int> getRecognizeIssuesResults() const;
     QVector <int> getRightAnswersArray() const;
@@ -73,7 +76,6 @@ public slots:
 	QVector<QString> getPathFilesItems() const;
 
 private:
-    QImage cropImage(QImage original, QRect rect);
     QVector<documentsListItem> mItems;
     int mCurrentIndexClicked = 0;
     QString currentPathFile = "Example_2-1.PNG";
