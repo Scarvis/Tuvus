@@ -8,6 +8,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QFile>
+#include <QUrl>
 #include <QJsonParseError>
 #include "jsonparseclass.h"
 #include "infoclass.h"
@@ -20,10 +21,15 @@ public:
     int setNewPatternRecognition(QString str);
     int isOk() const;
     int setTestPatternRecognition();
+	int setRightAnswers();
+	QVector<QString> getRightAnswersList() const;
     QVector<InfoClass> getRecognitionArea() const;
 	InfoClass getRecognitionAreaAt(int index) const;
 	QVector<InfoClass> getAnswerRecognitionArea() const;
 	int getSizeRecognitionArea() const;
+	QString getPatternsPath() const;
+	QString getAnswersFilesPath() const;
+	bool saveNewPatternRecognition(const QUrl &fileUrl, QVector<QString> x, QVector<QString> y, QVector<QString> width, QVector<QString> height);
     patternRecognitionModule operator=(const patternRecognitionModule right){
         if(this == &right){
             return *this;
@@ -40,6 +46,7 @@ public:
         return *this;
     }
 private:
+	void generateRandomAnswers();
     int countQuestion = 0;
     int numbersOfReplies = 0;
     int answerNumber = 0;
@@ -47,12 +54,13 @@ private:
     double indentBetweenQuestions = 0;
     QVector<InfoClass> questionsAnswersInfo;
     QVector<InfoClass> recognitionArea;
+	QVector<QString> listAnswers;
     int isOkCurrentPattern = 1;
     JsonParseClass jsonParse;
-
+	const QString patternsPath = QDir::currentPath() + "/src/patterns/";
+	const QString answersFilesPath = QDir::currentPath() + "/src/answers_reference/";
     const QString testPatternFileName = "/src/patterns/test_pattern.json";
     const QDir testPatternFilePath = QDir::currentPath() + testPatternFileName;
-
 };
 
 #endif // PATTERNRECOGNITIONMODULE_H

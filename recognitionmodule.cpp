@@ -3,9 +3,7 @@
 #include "infoclass.h"
 #include <QImage>
 #include <QBuffer>
-#include <opencv2/opencv.hpp>
 
-using namespace cv;
 
 RecognitionModule::RecognitionModule()
 {
@@ -180,14 +178,7 @@ QString RecognitionModule::recognize(QString objectRecognitionPathFile, InfoClas
 
 void RecognitionModule::preliminaryProcessing(std::string objRecogPath)
 {
-	Mat image = imread(objRecogPath);
-	if (image.empty())
-	{
-		qDebug() << "Could not open or find the image";
-		return;
-	}
-	std::string windowName = "The Guitar";
-	namedWindow(windowName); // Create a window
+	
 
 	//imshow(windowName, image); // Show our image inside the created window.
 

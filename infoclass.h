@@ -8,6 +8,7 @@ public:
     InfoClass();
     InfoClass(int x, int y, int width, int height);
     InfoClass(int number, int x, int y, int width, int height, QVector<InfoClass> answers);
+	InfoClass(QString x, QString y, QString width, QString height);
     //InfoClass(InfoClass infoClass);
     int number() const;
     int x() const;

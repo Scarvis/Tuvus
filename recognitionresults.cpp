@@ -12,12 +12,18 @@ QString RecognitionResults::outputFile()
 
 void RecognitionResults::addRecognitionResults(QString str)
 {
-    outputString += str;
+	outStrList.append(str);
+    outputString += (str);
 }
 
 QString RecognitionResults::getRecognitionResultsString() const
 {
 	return outputString;
+}
+
+QVector<QString> RecognitionResults::getRecognitionResultsList() const
+{
+	return outStrList;
 }
 
 void RecognitionResults::clear()

@@ -37,7 +37,7 @@ public:
 	void clear();
 	QImage cropImage(QImage original, QRect rect);
 	QImage cropImage(QImage original, InfoClass infoClass);
-
+	QString getCurrentDocumentName() const;
 
     DocumentsListModule(const DocumentsListModule &documents) {
         mItems = documents.mItems;

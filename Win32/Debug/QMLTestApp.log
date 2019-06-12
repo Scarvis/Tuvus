@@ -1,6 +1,3 @@
-﻿  inspectionsystem.cpp
-c:\users\mikhail\documents\qmltestapp\tesseract-include\leptonica\environ.h(277): warning C4005: snprintf: изменение макроопределения
-  c:\users\mikhail\documents\qmltestapp\tesseract-include\tesseract\platform.h(33): note: см. предыдущее определение "snprintf"
-c:\users\mikhail\documents\qmltestapp\tesseract-include\leptonica\pix.h(169): warning C4305: инициализация: усечение из "double" в "l_float32"
-c:\users\mikhail\documents\qmltestapp\tesseract-include\leptonica\pix.h(171): warning C4305: инициализация: усечение из "double" в "l_float32"
+﻿  Rcc'ing qml.qrc...
+  qrc_qml.cpp
   QMLTestApp.vcxproj -> C:\Users\Mikhail\Documents\QMLTestApp\debug\QMLTestApp.exe

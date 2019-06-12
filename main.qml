@@ -30,7 +30,65 @@ ApplicationWindow {
     property var prostoBuf: []
     property bool recognizeDocumentsBool: false
     property var blyat: []
+    property int currentIndexPatternRecognition: 0
+    property var arrayPatternRecognition: []
+    property var arrayFileAnswers: []
 
+    Loader {
+       id: loaderId;
+       anchors.fill: parent;
+       onLoaded: {
+           console.log("mainqml: ",arrayPatternRecognition)
+           loaderId.item.setPatternRecognitionArray(arrayPatternRecognition)
+       }
+    }
+    Connections {
+        target: loaderId.item
+        onMouseClicked: selectPatternId()
+    }
+
+    Loader {
+       id: loaderSelectFileAnswers;
+       anchors.fill: parent;
+       onLoaded: {
+           console.log("mainqml: ",arrayFileAnswers)
+           loaderSelectFileAnswers.item.setPatternRecognitionArray(arrayFileAnswers)
+       }
+    }
+    // Connections {
+    //     target: loaderSelectFileAnswers.item
+    //     onMouseClicked: selectPatternId()
+    // }
+    
+    Loader {
+       id: loaderCreatePatternRecognition;
+       anchors.fill: parent;
+    }
+    Connections {
+        target: loaderCreatePatternRecognition.item
+        onMouseClicked: getCropImage()
+    }
+    function selectPatternId() {
+        console.log(loaderId.item.currentIndexClicked)
+        currentIndexPatternRecognition = loaderId.item.currentIndexClicked
+        inspectionSystem.setPatternRecognition()
+    }
+    
+    function getCropImage() {
+        var buf = loaderCreatePatternRecognition.item.currentIndexClicked
+        if(loaderCreatePatternRecognition.item.saveClicked){
+            saveDialog.open()
+            return
+        }
+        var str = inspectionSystem.getCropImage(
+            loaderCreatePatternRecognition.item.pathImageConst,
+            loaderCreatePatternRecognition.item.xArray[buf],
+            loaderCreatePatternRecognition.item.yArray[buf],
+            loaderCreatePatternRecognition.item.widthArray[buf],
+            loaderCreatePatternRecognition.item.heightArray[buf]
+        )
+        loaderCreatePatternRecognition.item.pathImage = str
+    }
 
     header: MenuBar {
         id: menuBar
@@ -157,11 +215,47 @@ ApplicationWindow {
         }
         Menu {
             title: qsTr("Вид")
+            Action {
+                text: qsTr("save")
+                onTriggered: {
+                    //inspectionSystem.saveImageCrop()
+                }
+            }
         }
         Menu {
             title: qsTr("Распознавание")
             Action {
                 text: qsTr("Дебаг распознавания")
+            }
+            Action {
+                text: qsTr("Выбор шаблона распознавания")
+                onTriggered: {
+                    if(loaderId.source == "file:C://Users//Mikhail//Documents//QMLTestApp//SelectPatternRecognition.qml"){
+                        loaderId.source = ""
+                    }
+                    arrayPatternRecognition = inspectionSystem.getArrayPatternRecognition()
+                    loaderId.source = "file:C://Users//Mikhail//Documents//QMLTestApp//SelectPatternRecognition.qml"
+                }
+            }
+            Action {
+                text: qsTr("Выбор файла с ответами")
+                onTriggered: {
+                    if(loaderSelectFileAnswers.source == "file:C://Users//Mikhail//Documents//QMLTestApp//SelectAnswersFile.qml"){
+                        loaderSelectFileAnswers.source = ""
+                    }
+                    arrayFileAnswers = inspectionSystem.getArrayFileAnswers()
+                    loaderSelectFileAnswers.source = "file:C://Users//Mikhail//Documents//QMLTestApp//SelectAnswersFile.qml"
+                }
+            }
+            Action {
+                text: qsTr("Создание шаблона распознавания")
+                onTriggered: {
+                    if(loaderCreatePatternRecognition.source == "file:C://Users//Mikhail//Documents//QMLTestApp//CreatePatternRecognition.qml"){
+                        loaderCreatePatternRecognition.source = ""
+                    }
+                    loaderCreatePatternRecognition.source = "file:C://Users//Mikhail//Documents//QMLTestApp//CreatePatternRecognition.qml"
+                }
+
             }
         }
         Menu {
@@ -236,6 +330,16 @@ ApplicationWindow {
                         inspectionSystem.recognizeCurrentFolder()
                         maxIndexCroppedQuestionImage = inspectionSystem.getMaxIndexCroppedQuestionImage()
                         recognizeDocumentsBool = true
+                        //recognizeIssuesArrayFromCode = modelList.list.getRecognizeIssuesResults()
+                        recognizeIssuesArrayFromCode = inspectionSystem.getRecognizedIssuesList()
+                        //recognizedIssuesListViewModel.append({recognizedIssues: "Вопрос №" + 1 + ": " + 1})
+                        for(var i = 0; i < recognizeIssuesArrayFromCode.length; i++)
+                            recognizedIssuesListViewModel.append({recognizedIssues: "Вопрос №" + (i+1) + ": " + recognizeIssuesArrayFromCode[i]})
+                        //rightAnswersListViewModel.append({rightAnswer: "Вопрос №" + 1 + ": " + 1})
+                        rightAnswersArrayFromCode = inspectionSystem.getRightAnswersList()
+                        for(var k = 0; k < recognizeIssuesArrayFromCode.length; k++)
+                            rightAnswersListViewModel.append({rightAnswer: "Вопрос №" + (k+1) + ": " + rightAnswersArrayFromCode[k]})
+                        curentDocumentInfoText.text = inspectionSystem.getCurrentDocumentName()      
                     } 
                 }
 
@@ -244,7 +348,16 @@ ApplicationWindow {
                     text: "\uF289\uE800 Распознать файл" // icon-folder-open-empty
                     font.family: "fontello"
                     font.pixelSize: toolButtonIconSizeGeneral
-                   
+                }
+
+                ToolButton {
+                    id: generateReportToolButton
+                    text: "Генерация отчета"
+                    font.family: "fontello"
+                    font.pixelSize: toolButtonIconSizeGeneral
+                    onClicked: {
+
+                    }
                 }
 
             }
@@ -254,7 +367,7 @@ ApplicationWindow {
 
 
 
-
+    
 
     QInspectionSystem {
         id: inspectionSystem
@@ -598,16 +711,20 @@ ApplicationWindow {
         Column {
             Row {
                 Rectangle {
-                id: curentDocumentInfo
-                width: 1110
-                height: 40
-                Text {
-                    text: qsTr("test text")
+                    id: curentDocumentInfo
+                    width: 1110
+                    height: 40
+                    Text {
+                        id: curentDocumentInfoText
+                        text: {
+                            var str = inspectionSystem.getCurrentDocumentName()
+                            return str;
+                        }
 
 
-                    font.pixelSize: 28
-                    anchors.verticalCenter: parent.verticalCenter
-                    leftPadding: 15
+                        font.pixelSize: 20
+                        anchors.verticalCenter: parent.verticalCenter
+                        leftPadding: 15
                 }
                 Rectangle {
                     width: parent.width
@@ -625,6 +742,20 @@ ApplicationWindow {
                     id: recognizedIssuesText
                     width: 300
                     height: 40
+                    // ComboBox {
+                    //     width: parent.width
+                    //     height: parent.height
+                    //     model: ListModel {
+                    //         id: recognizedIssuesModel
+                    //     }
+                    //     Component.onCompleted: {
+                    //         arrayPatternRecognition = inspectionSystem.getArrayPatternRecognition()
+                    //         for(var i = 0; i < arrayPatternRecognition.length; i++){
+                    //             recognizedIssuesModel.append(arrayPatternRecognition[i])
+                    //         }
+
+                    //     }
+                    // }
                     Text {
                         text: "Распознанные ответы"
                         font.pixelSize: 14
@@ -651,8 +782,8 @@ ApplicationWindow {
                     Rectangle {
                         id: closeUpDocumentRecognizeResult
                         width: 1100
-                        height: 150
-                        color: "red"
+                        height: 148
+                        //color: "red"
                         
 
                         RowLayout {
@@ -679,16 +810,23 @@ ApplicationWindow {
                                     var pf = inspectionSystem.getCurrentCloseUpDocumentRecognizeResult(indexCroppedQuestionImage)
                                     if(pf.length < 1)
                                         pf = "nothing"
+                                    else 
+                                        var retPf = indexCroppedQuestionImage + "\n" + pf
                                     console.log("Text. ", "x = ", x, "y = ", y)
-                                    return pf
+                                    return retPf
                                 }
                                 //horizontalAlignment: Qt.AlignHCenter
                                 //verticalAlignment: Qt.AlignVCenter
+                                y: 55
                                 anchors.horizontalCenter: closeUpDocumentRecognizeResult.horizontalCenter
-                                anchors.verticalCenter: closeUpDocumentRecognizeResult.verticalCenter
+                                //anchors.verticalCenter: closeUpDocumentRecognizeResult.verticalCenter
                                 font.pixelSize: 22
+                                onTextChanged: {
+                                    anchors.horizontalCenter = closeUpDocumentRecognizeResult.horizontalCenter
+                                }
 
                             }
+                            
                             ToolButton {
                                 text: "\uF178"
                                 font.family: "fontello"
@@ -702,12 +840,20 @@ ApplicationWindow {
                                     console.log("Right tb. ", "x = ", x, "y = ", y)
                                 }
                             }
+                            
                         }
+                        
                     }
+                    Rectangle {
+                        anchors.top: closeUpDocumentRecognizeResult.top
+                        height: 2
+                        color: "black"
+                    }
+
                     Rectangle {
                         id: closeUpDocument
                         width: 1100
-                        height: 800
+                        height: 700
                         anchors.topMargin: 5
                         antialiasing: true
                         Image {
@@ -740,6 +886,7 @@ ApplicationWindow {
                             y: 120
                             width: 75
                             height: 60 
+                            visible: false
                             border {
                                 color: "green"
                                 width: 2
@@ -749,104 +896,10 @@ ApplicationWindow {
                 }
 
 
-//                Column {
-//                    Row {
-//                        anchors.horizontalCenter: parent.horizontalCenter
-//                        spacing: 5
-//                        Button {
-//                            height: 25
-//                            width: 25
-//                            Text {
-//                                text: "\uF177"
-//                                font.family: "fontello"
-//                                font.pixelSize: 20
-//                            }
-//                            onClicked: {
-//                                if(indexCroppedQuestionImage > 1)
-//                                    indexCroppedQuestionImage--;
-//                            }
-//                        }
-//                        Rectangle {
-//                            height: 24
-//                            width: 48
-//                            border {
-//                                color: "#D6E5FE"
-//                                width: 0.5
-//                            }
-//                            TextEdit {
-//                                height: 25
-//                                width: 50
-//                                //validator: RegExpValidator { regExp : /[0-9]+\.[0-9]+/ }
-//                                wrapMode: Text.WordWrap
-//                                cursorVisible: false
-//                                Text {
-//                                    text: indexCroppedQuestionImage
-//                                    anchors.horizontalCenter: parent.horizontalCenter
-//                                    anchors.verticalCenter: parent.verticalCenter
-//                                }
-//                                readOnly: true
-//                                onTextChanged: {
-//                                    if(text.length < 5){
-//                                        indexCroppedQuestionImage = getText(0, text.length)
-//                                        console.log("text change", indexCroppedQuestionImage)
-//                                    }
-//                                    else {
-
-//                                    }
-//                                }
-//                            }
-//                        }
-//                        Button {
-//                            height: 25
-//                            width: 25
-//                            Text {
-//                                text: "\uF178"
-//                                font.family: "fontello"
-//                                font.pixelSize: 20
-//                            }
-//                            onClicked: {
-//                                if(indexCroppedQuestionImage < 10)
-//                                    indexCroppedQuestionImage++;
-//                            }
-//                        }
-//                    }
-
-//                    Rectangle {
-//                        id: croppingDocumentQuestion
-//                        width: parent.width
-//                        height: 250
-//                        anchors.topMargin: 10
-//                        Image {
-//                            //source: "background.png"
-//                            source: {
-//                                var pf = modelList.list.getCurrentCropQuestion(indexCroppedQuestionImage)
-//                                return pf
-//                            }
-//                            anchors.horizontalCenter: parent.horizontalCenter
-//                            //anchors.verticalCenter: parent.verticalCenter
-//                            width: parent.width - 20
-//                            height: 150
-//                        }
-//                    }
-
-//                    Row {
-//                        Rectangle {
-//                            width: 100
-//                            height: 540
-//                            color: "blue"
-//                        }
-//                        Rectangle {
-//                            width: 100
-//                            height: 540
-//                            color: "yellow"
-//                        }
-//                    }
-//                }
-
                 Rectangle {
                     id: recognizedIssuesArea
                     width: 300
-                    height: mainWindow.height
+                    height: 870
                     //color: "green"
                     ListView {
                         id: recognizedIssuesListView
@@ -856,12 +909,32 @@ ApplicationWindow {
                         delegate: Item {
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            height: 20
+                            height: 30
                             anchors.leftMargin: 10
                             Text {
                                 anchors.fill: parent
                                 anchors.margins: 5
                                 text: recognizedIssues
+                            }
+                            Rectangle {
+                                width: 290
+                                height: 30
+                                color: "transparent"
+                                border{
+                                    color: {
+                                        var colorM = "#ff423e"
+                                        if (recognizedIssuesListViewModel.get(index).recognizedIssues == rightAnswersListViewModel.get(index).rightAnswer)
+                                            colorM = "#1cff16"
+                                        return colorM
+                                    }
+                                    width: 1
+                                }
+                            }
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: {
+                                    indexCroppedQuestionImage = index + 1
+                                }
                             }
                         }
                         model: ListModel {
@@ -875,7 +948,7 @@ ApplicationWindow {
                 Rectangle {
                     id: rightAnswersArea
                     width: 300
-                    height: mainWindow.height
+                    height: 870
                     ListView {
                         id: rightAnswersListView
                         anchors.fill: parent
@@ -884,13 +957,27 @@ ApplicationWindow {
                         delegate: Item {
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            height: 20
+                            height: 30
                             anchors.leftMargin: 10
                             Text {
                                 anchors.fill: parent
                                 anchors.margins: 5
                                 text: rightAnswer
                             }
+                            // Rectangle {
+                            //     width: 300
+                            //     height: 20
+                            //     color: "transparent"
+                            //     border{
+                            //         color: {
+                            //             var colorM = "#ffbd00"
+                            //             if(recognizeAreaId.currentIndex == index)
+                            //                 colorM = "#157efb"
+                            //             return colorM
+                            //         }
+                            //         width: 2
+                            //     }
+                            // }
                         }
                         model: ListModel {
                             id: rightAnswersListViewModel
@@ -920,8 +1007,31 @@ ApplicationWindow {
             console.log("Canceled")
            //Qt.quit()
         }
-        nameFilters: [ "Image files (*.png *.jpg)"]
+        nameFilters: [ "Image files (*.png *.jpg)", "Json Files (*.json)"]
+        //selectedNameFilter.index: 0
         selectedNameFilter: "Image files (*.png *.jpg)"
+    }
+
+    FileDialog {
+        id: saveDialog
+        //fileMode: FileDialog.SaveFile
+        title: "Save file"
+        //defaultSuffix: document.fileType
+        nameFilters: openDialog.nameFilters
+        //selectedNameFilter.index: 1
+        //folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+        onAccepted: {
+            if(loaderCreatePatternRecognition.item.saveClicked){
+                inspectionSystem.savePatternRecognition(
+                    fileUrl,
+                    loaderCreatePatternRecognition.item.xArray, 
+                    loaderCreatePatternRecognition.item.yArray,
+                    loaderCreatePatternRecognition.item.widthArray,
+                    loaderCreatePatternRecognition.item.heightArray
+                )
+                loaderCreatePatternRecognition.item.saveClicked = false
+            }
+        }
     }
 
     MessageDialog {

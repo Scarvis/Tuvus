@@ -1,0 +1,43 @@
+{
+    "countQuestion": 5,
+    "defaultNumbersOfCorrectReplies": 1,
+    "indentBetweenQuestions": 1,
+    "numbersOfReplies": 1,
+    "questions": [
+        {
+            "height": "125",
+            "number": 1,
+            "width": "100",
+            "x": "450",
+            "y": "170"
+        },
+        {
+            "height": "125",
+            "number": 2,
+            "width": "100",
+            "x": "700",
+            "y": "170"
+        },
+        {
+            "height": "125",
+            "number": 3,
+            "width": "100",
+            "x": "960",
+            "y": "170"
+        },
+        {
+            "height": "125",
+            "number": 4,
+            "width": "100",
+            "x": "1220",
+            "y": "170"
+        },
+        {
+            "height": "125",
+            "number": 5,
+            "width": "100",
+            "x": "1480",
+            "y": "170"
+        }
+    ]
+}

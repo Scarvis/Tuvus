@@ -23,6 +23,14 @@ InfoClass::InfoClass(int number, int x, int y, int width, int height, QVector<In
     this->Answers = answers;
 }
 
+InfoClass::InfoClass(QString x, QString y, QString width, QString height)
+{
+	this->X = x.toInt();
+	this->Y = y.toInt();
+	this->Width = width.toInt();
+	this->Height = height.toInt();
+}
+
 int InfoClass::number() const
 {
     return Number;

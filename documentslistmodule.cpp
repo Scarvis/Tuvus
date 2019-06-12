@@ -5,9 +5,9 @@
 
 DocumentsListModule::DocumentsListModule(QObject *parent) : QObject(parent)
 {
+    mItems.append({ "file:C://Users//Mikhail//Documents//QMLTestApp//Scan1.png", "example"});
     mItems.append({"Example_2-1.PNG", "example"});
-    mItems.append({"Example_2-1.PNG", "example"});
-    mItems.append({"background.png", "backround"});
+    mItems.append({ "file:C://Users//Mikhail//Documents//QMLTestApp//dashi.png", "backround"});
     statusDocuments.fill(0,mItems.size());
     srand(time_t(NULL));
     rightAnswersArray.fill(1, 60);
@@ -148,6 +148,13 @@ QImage DocumentsListModule::cropImage(QImage original, InfoClass infoClass)
 	QRect rect = infoClass.getQRect();
 	QImage cropped = original.copy(rect);
 	return cropped;
+}
+
+QString DocumentsListModule::getCurrentDocumentName() const
+{
+	if (mCurrentIndexClicked >= mItems.size())
+		return QString("Error, current index more size");
+	return mItems[mCurrentIndexClicked].nameFile;
 }
 
 QString DocumentsListModule::getCurrentCropQuestion(int index)
