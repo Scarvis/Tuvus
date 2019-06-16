@@ -6,7 +6,7 @@ import QtQml 2.4
 
 ApplicationWindow {
     id: mainWindow
-    title: qsTr("Выбор файла с ответами")
+    title: qsTr("Сохранение отчета")
     width: 640
     height: 600
     visible: true
@@ -63,7 +63,7 @@ ApplicationWindow {
                 height: 20
                 //anchors.top: lbl2.bottom
                 Text {
-                    text: qsTr("    Создан  = ")
+                    text: qsTr("    Создан пользователем = ")
                     font.pixelSize: 18
                 }
             }
@@ -163,7 +163,7 @@ ApplicationWindow {
                     anchors.leftMargin: 5
                     anchors.fill: parent
                     font.pixelSize: 16
-                    text: "people"
+                    text: "User"
 
                 }
             }
@@ -174,7 +174,20 @@ ApplicationWindow {
                 TextInput {
                     anchors.leftMargin: 5
                     anchors.fill: parent
-                    text: "qw"
+                    text: "1"
+                    font.pixelSize: 16
+
+                }
+            }
+            Rectangle {
+                height: 28
+                width: 200
+                color: "white"
+                visible: singleReport
+                TextInput {
+                    //text: "test2"
+                    anchors.leftMargin: 5
+                    anchors.fill: parent
                     font.pixelSize: 16
 
                 }
@@ -188,19 +201,7 @@ ApplicationWindow {
                     anchors.leftMargin: 5
                     anchors.fill: parent
                     font.pixelSize: 16
-
-                }
-            }
-            Rectangle {
-                height: 28
-                width: 200
-                color: "white"
-                visible: singleReport
-                TextInput {
-                    anchors.leftMargin: 5
-                    anchors.fill: parent
-                    font.pixelSize: 16
-
+                    //text: "test2 answers"
                 }
             }
 
@@ -212,7 +213,7 @@ ApplicationWindow {
                     anchors.leftMargin: 5
                     anchors.fill: parent
                     font.pixelSize: 16
-
+                    text: "test2"
                 }
             }
 
@@ -224,7 +225,7 @@ ApplicationWindow {
                     anchors.leftMargin: 5
                     anchors.fill: parent
                     font.pixelSize: 16
-
+                    text: "test2 answers"
                 }
             }
         }

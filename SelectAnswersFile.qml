@@ -8,12 +8,14 @@ ApplicationWindow {
     width: 640
     height: 500
     visible: true
+    title: "Выбор файла с ответами"
     signal mouseClicked()
     property int number: 0
     property int currentIndexClicked: -1
 
     function setPatternRecognitionArray(patternRecognitionMas) {
         console.log(patternRecognitionMas)
+        patternRecognitionArrayViewModel.append({patternRecognitionText: "test2 answers"})
         for(var i = 0; i < patternRecognitionMas.length; i++)
             patternRecognitionArrayViewModel.append({patternRecognitionText: patternRecognitionMas[i]})
     }
@@ -151,7 +153,7 @@ ApplicationWindow {
                 Label {
                     text: {
                         if(currentIndexClicked >= 0)
-                            return numberQuestion
+                            return "40"
                         else
                             return "62"
                     }
@@ -173,20 +175,20 @@ ApplicationWindow {
                 }
             }
 
-            Row {
-                Label {
-                    anchors.leftMargin: 10
-                    text: qsTr("    Количество  = ")
-                }
-                Label {
-                    text: {
-                        if(currentIndexClicked >= 0)
-                            return numberOfRecognitionArea
-                        else
-                            return "NULL"
-                    }
-                }
-            }
+            // Row {
+            //     Label {
+            //         anchors.leftMargin: 10
+            //         text: qsTr("    Количество  = ")
+            //     }
+            //     Label {
+            //         text: {
+            //             if(currentIndexClicked >= 0)
+            //                 return numberOfRecognitionArea
+            //             else
+            //                 return "NULL"
+            //         }
+            //     }
+            // }
         }
     }
 

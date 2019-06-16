@@ -6,8 +6,8 @@
 DocumentsListModule::DocumentsListModule(QObject *parent) : QObject(parent)
 {
     mItems.append({ "file:C://Users//Mikhail//Documents//QMLTestApp//Scan1.png", "example"});
-    mItems.append({"Example_2-1.PNG", "example"});
-    mItems.append({ "file:C://Users//Mikhail//Documents//QMLTestApp//dashi.png", "backround"});
+    //mItems.append({"Example_2-1.PNG", "example"});
+    //mItems.append({ "file:C://Users//Mikhail//Documents//QMLTestApp//dashi.png", "backround"});
     statusDocuments.fill(0,mItems.size());
     srand(time_t(NULL));
     rightAnswersArray.fill(1, 60);

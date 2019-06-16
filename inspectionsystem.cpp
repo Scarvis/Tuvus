@@ -309,6 +309,14 @@ bool inspectionSystem::setPatternRecognition()
 	return ok;
 }
 
+void inspectionSystem::changeCurrentCloseUpDocumentRecognizeResult(int index, QString text)
+{
+    if (index - 1 >= currentRecognizedIssues.size() || index - 1 < 0)
+        return;
+    if (text.length() > 0)
+        currentRecognizedIssues[index - 1] = text;
+}
+
 QString inspectionSystem::checkPathFileForFile(QString pathFile)
 {
 	QString res = pathFile.left(5);

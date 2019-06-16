@@ -15,6 +15,7 @@ ApplicationWindow {
     visible: true
     height: 1000
     width: 1920
+    title: "Tuvus Reader"
     property color menuBackgroundColor: "#3C3C3C"
     property color menuBorderColor: "#282828"
     property int number: 0
@@ -33,7 +34,8 @@ ApplicationWindow {
     property int currentIndexPatternRecognition: 0
     property var arrayPatternRecognition: []
     property var arrayFileAnswers: []
-
+    property bool isChangeCurrentRecognizeText: false
+    property bool testForVideo: false
     Loader {
        id: loaderId;
        anchors.fill: parent;
@@ -68,6 +70,17 @@ ApplicationWindow {
         target: loaderCreatePatternRecognition.item
         onMouseClicked: getCropImage()
     }
+
+    Loader {
+        id: loaderGenerateFileReport
+        anchors.fill: parent
+    }
+
+    Connections {
+        target: loaderGenerateFileReport.item
+        onMouseClicked: saveFileReport()
+    }
+
     function selectPatternId() {
         console.log(loaderId.item.currentIndexClicked)
         currentIndexPatternRecognition = loaderId.item.currentIndexClicked
@@ -90,6 +103,10 @@ ApplicationWindow {
         loaderCreatePatternRecognition.item.pathImage = str
     }
 
+    function saveFileReport() {
+
+    }
+
     header: MenuBar {
         id: menuBar
         width: parent.width
@@ -101,7 +118,9 @@ ApplicationWindow {
             Action {
                 text: qsTr("Открыть файл")
                 shortcut: "Ctrl+O"
-
+                onTriggered: {
+                    openDialog.open()
+                }
             }
             Action {
                 text: qsTr("Открыть папку")
@@ -224,9 +243,7 @@ ApplicationWindow {
         }
         Menu {
             title: qsTr("Распознавание")
-            Action {
-                text: qsTr("Дебаг распознавания")
-            }
+            
             Action {
                 text: qsTr("Выбор шаблона распознавания")
                 onTriggered: {
@@ -310,7 +327,7 @@ ApplicationWindow {
                 height: 100
                 ToolButton {
                     id: openButton
-                    text: "\uF115" // icon-folder-open-empty
+                    text: "\uF115 Загрузить файл" // icon-folder-open-empty
                     font.family: "fontello"
                     font.pixelSize: toolButtonIconSizeGeneral
                     onClicked: openDialog.open()
@@ -318,7 +335,7 @@ ApplicationWindow {
 
                 ToolButton {
                     id: recognizeFolderDocumentsToolButton
-                    text: "\uF289 Распознать всю папку" // icon-folder-open-empty
+                    text: "\uF289 Распознать всю очередь" // icon-folder-open-empty
                     font.family: "fontello"
                     font.pixelSize: toolButtonIconSizeGeneral
                     onClicked: {
@@ -330,12 +347,9 @@ ApplicationWindow {
                         inspectionSystem.recognizeCurrentFolder()
                         maxIndexCroppedQuestionImage = inspectionSystem.getMaxIndexCroppedQuestionImage()
                         recognizeDocumentsBool = true
-                        //recognizeIssuesArrayFromCode = modelList.list.getRecognizeIssuesResults()
                         recognizeIssuesArrayFromCode = inspectionSystem.getRecognizedIssuesList()
-                        //recognizedIssuesListViewModel.append({recognizedIssues: "Вопрос №" + 1 + ": " + 1})
                         for(var i = 0; i < recognizeIssuesArrayFromCode.length; i++)
                             recognizedIssuesListViewModel.append({recognizedIssues: "Вопрос №" + (i+1) + ": " + recognizeIssuesArrayFromCode[i]})
-                        //rightAnswersListViewModel.append({rightAnswer: "Вопрос №" + 1 + ": " + 1})
                         rightAnswersArrayFromCode = inspectionSystem.getRightAnswersList()
                         for(var k = 0; k < recognizeIssuesArrayFromCode.length; k++)
                             rightAnswersListViewModel.append({rightAnswer: "Вопрос №" + (k+1) + ": " + rightAnswersArrayFromCode[k]})
@@ -356,7 +370,11 @@ ApplicationWindow {
                     font.family: "fontello"
                     font.pixelSize: toolButtonIconSizeGeneral
                     onClicked: {
-
+                        if(loaderGenerateFileReport.source == "file:C://Users//Mikhail//Documents//QMLTestApp//FileReport.qml"){
+                            loaderGenerateFileReport.source = ""
+                        }
+                        //arrayPatternRecognition = inspectionSystem.getArrayPatternRecognition()
+                        loaderGenerateFileReport.source = "file:C://Users//Mikhail//Documents//QMLTestApp//FileReport.qml"
                     }
                 }
 
@@ -462,7 +480,7 @@ ApplicationWindow {
                 text: "ДОКУМЕНТЫ"
                 font.pixelSize: 20
                 font.family: "Times New Roman"
-                color: "red"
+                color: "black"
                 anchors.top: documents.top
                 horizontalAlignment: Text.AlignHCenter
                 anchors.horizontalCenter: documents.horizontalCenter
@@ -541,12 +559,7 @@ ApplicationWindow {
                                     inspectionSystem.setDocumentsList(blyat, documentsListIndexCurrent)
                                     inspectionSystem.recognizeCurrentFolder()
                                     
-                                    // recognizeIssuesArrayFromCode = modelList.list.getRecognizeIssuesResults()
-                                    // for(var i = 0; i < recognizeIssuesArrayFromCode.length; i++)
-                                    //     recognizedIssuesListViewModel.append({recognizedIssues: "Вопрос №" + (i+1) + ": " + recognizeIssuesArrayFromCode[i]})
-                                    // rightAnswersArrayFromCode = modelList.list.getRightAnswersArray()
-                                    // for(var k = 0; k < recognizeIssuesArrayFromCode.length; k++)
-                                    //     rightAnswersListViewModel.append({rightAnswer: "Вопрос №" + (k+1) + ": " + rightAnswersArrayFromCode[k]})
+                                    
                                     maxIndexCroppedQuestionImage = inspectionSystem.getMaxIndexCroppedQuestionImage()
                                     recognizeDocumentsBool = true
                                 }
@@ -583,8 +596,8 @@ ApplicationWindow {
                     anchors.right: parent.right
                     anchors.fill: parent
                     leftMargin: 25
-                    visible: true
                     spacing: 135
+                    visible: testForVideo
 
                     width: parent.width
                     focus: true
@@ -783,19 +796,66 @@ ApplicationWindow {
                         id: closeUpDocumentRecognizeResult
                         width: 1100
                         height: 148
-                        //color: "red"
-                        
+                        ToolButton {
+                            id: closeUpDocumentRecognizeResultChangeToolButton
+                            text: !isChangeCurrentRecognizeText ? "Исправить" : "Принять"
+                            font.pixelSize: 22
+                            anchors.top: closeUpDocumentRecognizeResultText.bottom
+                            anchors.horizontalCenter: closeUpDocumentRecognizeResult.horizontalCenter
+                            anchors.topMargin: 15
+                            onClicked: {
+                                console.log(x)
+                                if(!isChangeCurrentRecognizeText)
+                                    isChangeCurrentRecognizeText = true;
+                                else if(isChangeCurrentRecognizeText){
+                                    inspectionSystem.changeCurrentCloseUpDocumentRecognizeResult(
+                                        indexCroppedQuestionImage, 
+                                        closeUpDocumentRecognizeResultTextInput.text
+                                    )
+                                    isChangeCurrentRecognizeText = false;
+                                    recognizedIssuesListViewModel.set(
+                                        indexCroppedQuestionImage - 1, 
+                                        { recognizedIssues: "Вопрос №" + indexCroppedQuestionImage + ": " + closeUpDocumentRecognizeResultTextInput.text}
+                                        )
+                                    var bf = indexCroppedQuestionImage
+                                    indexCroppedQuestionImage = 0
+                                    indexCroppedQuestionImage = bf
+                                }
+                            }
+                        }
+                        Rectangle {
+                            width: 100
+                            height: 30
+                            anchors.horizontalCenter: closeUpDocumentRecognizeResult.horizontalCenter
+                            anchors.verticalCenter: closeUpDocumentRecognizeResult.verticalCenter
+                            anchors.topMargin: 15
+                            visible: isChangeCurrentRecognizeText
+                            border {
+                                color: "black"
+                                width: 1
+                            }
+                            TextInput {
+                                width: 100
+                                height: 30
+                                visible: isChangeCurrentRecognizeText
+                                id: closeUpDocumentRecognizeResultTextInput
+                                font.pixelSize: 22
+                                anchors.horizontalCenter: parent.horizontalCenter
+                            }
+                        }
 
-                        RowLayout {
+                        Row {
                             anchors.fill: parent
 
                             ToolButton {
                                 text: "\uF177"
                                 font.family: "fontello"
                                 font.pixelSize: 22
-                                anchors.right: closeUpDocumentRecognizeResultText.left
+                                anchors.right: closeUpDocumentRecognizeResultRectangle.left
                                 anchors.rightMargin: 25
+                                visible: !isChangeCurrentRecognizeText
                                 anchors.verticalCenter: closeUpDocumentRecognizeResult.verticalCenter
+                                y: 50
                                 onClicked: {
                                     if(indexCroppedQuestionImage > 1)
                                         indexCroppedQuestionImage--
@@ -803,37 +863,48 @@ ApplicationWindow {
                                 }
                             }
 
-                            Text {
-                                id: closeUpDocumentRecognizeResultText
-                                text: {
-                                    if(!recognizeDocumentsBool) return "nil"
-                                    var pf = inspectionSystem.getCurrentCloseUpDocumentRecognizeResult(indexCroppedQuestionImage)
-                                    if(pf.length < 1)
-                                        pf = "nothing"
-                                    else 
-                                        var retPf = indexCroppedQuestionImage + "\n" + pf
-                                    console.log("Text. ", "x = ", x, "y = ", y)
-                                    return retPf
+                            Rectangle {
+                                id: closeUpDocumentRecognizeResultRectangle
+                                width: 100
+                                height: 50
+                                x: 491
+                                y: 50
+                                visible: !isChangeCurrentRecognizeText
+                                //anchors.horizontalCenter: closeUpDocumentRecognizeResult.horizontalCenter
+                                anchors.verticalCenter: closeUpDocumentRecognizeResult.verticalCenter
+                                Text {
+                                    id: closeUpDocumentRecognizeResultText
+                                    width: 100
+                                    height: 50
+                                    text: {
+                                        if(!recognizeDocumentsBool) return "nil"
+                                        var pf = inspectionSystem.getCurrentCloseUpDocumentRecognizeResult(indexCroppedQuestionImage)
+                                        if(pf.length < 1)
+                                            pf = "nothing"
+                                        else 
+                                            var retPf = "Вопрос #" + indexCroppedQuestionImage + "\n" + pf
+                                        console.log("Text. ", "x = ", x, "y = ", y)
+                                        return retPf
+                                    }
+                                    //anchors.horizontalCenter: parent.horizontalCenter
+                                    visible: !isChangeCurrentRecognizeText
+                                    //y: 55
+                                    //x: 550 - (closeUpDocumentRecognizeResultText.text.length)
+                                    //anchors.horizontalCenter: closeUpDocumentRecognizeResult.horizontalCenter
+                                    font.pixelSize: 22
+                                    
                                 }
-                                //horizontalAlignment: Qt.AlignHCenter
-                                //verticalAlignment: Qt.AlignVCenter
-                                y: 55
-                                anchors.horizontalCenter: closeUpDocumentRecognizeResult.horizontalCenter
-                                //anchors.verticalCenter: closeUpDocumentRecognizeResult.verticalCenter
-                                font.pixelSize: 22
-                                onTextChanged: {
-                                    anchors.horizontalCenter = closeUpDocumentRecognizeResult.horizontalCenter
-                                }
-
                             }
                             
                             ToolButton {
                                 text: "\uF178"
                                 font.family: "fontello"
                                 font.pixelSize: 22
-                                anchors.left: closeUpDocumentRecognizeResultText.right
+                                visible: !isChangeCurrentRecognizeText
+                                anchors.left: closeUpDocumentRecognizeResultRectangle.right
                                 anchors.leftMargin: 25
                                 anchors.verticalCenter: closeUpDocumentRecognizeResult.verticalCenter
+                                y: 50
                                 onClicked: {
                                     if(indexCroppedQuestionImage < maxIndexCroppedQuestionImage)
                                         indexCroppedQuestionImage++
@@ -867,6 +938,7 @@ ApplicationWindow {
                             antialiasing: true
                             smooth: true
                             fillMode: Image.PreserveAspectFit
+                            visible: testForVideo
                             source: {
                                 if(recognizeDocumentsBool){
                                     var pf = inspectionSystem.getCurrentCropQuestion(indexCroppedQuestionImage - 1)
@@ -934,6 +1006,7 @@ ApplicationWindow {
                                 anchors.fill: parent
                                 onClicked: {
                                     indexCroppedQuestionImage = index + 1
+                                    console.log("see thiss", recognizedIssues)
                                 }
                             }
                         }
@@ -996,11 +1069,12 @@ ApplicationWindow {
 
     FileDialog {
         id: openDialog
-        title: "Please choose a file"
+        title: "Выберите файл"
 
         onAccepted: {
             console.log("You choose: " + openDialog.fileUrls)
-            inspectionSystem.loadFile(file)
+            testForVideo = true
+            //inspectionSystem.loadFile(file)
             //Qt.quit()
         }
         onRejected: {

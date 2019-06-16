@@ -19,6 +19,7 @@ ApplicationWindow {
 
     function setPatternRecognitionArray(patternRecognitionMas) {
         console.log(patternRecognitionMas)
+        patternRecognitionArrayViewModel.append({patternRecognitionText: "test2"})
         for(var i = 0; i < patternRecognitionMas.length; i++)
             patternRecognitionArrayViewModel.append({patternRecognitionText: patternRecognitionMas[i]})
     }
@@ -155,7 +156,7 @@ ApplicationWindow {
                 Label {
                     text: {
                         if(currentIndexClicked >= 0)
-                            return numberQuestion
+                            return "40"
                         else
                             return "NULL"
                     }
@@ -170,7 +171,7 @@ ApplicationWindow {
                 Label {
                     text: {
                         if(currentIndexClicked >= 0)
-                            return numbersOfReplies
+                            return "1"
                         else
                             return "NULL"
                     }
@@ -185,7 +186,7 @@ ApplicationWindow {
                 Label {
                     text: {
                         if(currentIndexClicked >= 0)
-                            return numberOfRecognitionArea
+                            return "40"
                         else
                             return "NULL"
                     }
@@ -203,24 +204,7 @@ ApplicationWindow {
         anchors.top: col.bottom
         color: "gray"
 
-        // contentItem: Text {
-        //     text: control.text
-        //     font: control.font
-        //     opacity: enabled ? 1.0 : 0.3
-        //     color: control.down ? "#c2cbc3" : "black"
-        //     horizontalAlignment: Text.AlignHCenter
-        //     verticalAlignment: Text.AlignVCenter
-        //     elide: Text.ElideRight
-        // }
-
-        // background: Rectangle {
-        //     implicitWidth: parent.width
-        //     implicitHeight: parent.height
-        //     opacity: enabled ? 1 : 0.3
-        //     border.color: control.down ? "black" : "#808080"
-        //     border.width: 1
-        //     radius: 2
-        // }
+  
 
         onClicked: {
             msgDialog.open()

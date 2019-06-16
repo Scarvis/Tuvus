@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_inspectionSystem_t {
-    QByteArrayData data[35];
-    char stringdata0[568];
+    QByteArrayData data[37];
+    char stringdata0[617];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -66,7 +66,9 @@ QT_MOC_LITERAL(30, 473, 19), // "getArrayFileAnswers"
 QT_MOC_LITERAL(31, 493, 22), // "savePatternRecognition"
 QT_MOC_LITERAL(32, 516, 13), // "saveImageCrop"
 QT_MOC_LITERAL(33, 530, 21), // "setPatternRecognition"
-QT_MOC_LITERAL(34, 552, 15) // "statusDocuments"
+QT_MOC_LITERAL(34, 552, 43), // "changeCurrentCloseUpDocumentR..."
+QT_MOC_LITERAL(35, 596, 4), // "text"
+QT_MOC_LITERAL(36, 601, 15) // "statusDocuments"
 
     },
     "inspectionSystem\0loadFile\0\0fileUrl\0"
@@ -85,7 +87,8 @@ QT_MOC_LITERAL(34, 552, 15) // "statusDocuments"
     "getArrayPatternRecognition\0"
     "getArrayFileAnswers\0savePatternRecognition\0"
     "saveImageCrop\0setPatternRecognition\0"
-    "statusDocuments"
+    "changeCurrentCloseUpDocumentRecognizeResult\0"
+    "text\0statusDocuments"
 };
 #undef QT_MOC_LITERAL
 
@@ -95,34 +98,35 @@ static const uint qt_meta_data_inspectionSystem[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      20,   14, // methods
-       1,  168, // properties
+      21,   14, // methods
+       1,  178, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,  114,    2, 0x0a /* Public */,
-       4,    1,  117,    2, 0x0a /* Public */,
-       6,    0,  120,    2, 0x0a /* Public */,
-       7,    0,  121,    2, 0x0a /* Public */,
-       8,    0,  122,    2, 0x0a /* Public */,
-       9,    1,  123,    2, 0x0a /* Public */,
-      11,    0,  126,    2, 0x0a /* Public */,
-      13,    0,  127,    2, 0x0a /* Public */,
-      15,    0,  128,    2, 0x0a /* Public */,
-      16,    1,  129,    2, 0x0a /* Public */,
-      17,    2,  132,    2, 0x0a /* Public */,
-      20,    0,  137,    2, 0x0a /* Public */,
-      21,    1,  138,    2, 0x0a /* Public */,
-      22,    5,  141,    2, 0x0a /* Public */,
-      28,    0,  152,    2, 0x0a /* Public */,
-      29,    0,  153,    2, 0x0a /* Public */,
-      30,    0,  154,    2, 0x0a /* Public */,
-      31,    5,  155,    2, 0x0a /* Public */,
-      32,    0,  166,    2, 0x0a /* Public */,
-      33,    0,  167,    2, 0x0a /* Public */,
+       1,    1,  119,    2, 0x0a /* Public */,
+       4,    1,  122,    2, 0x0a /* Public */,
+       6,    0,  125,    2, 0x0a /* Public */,
+       7,    0,  126,    2, 0x0a /* Public */,
+       8,    0,  127,    2, 0x0a /* Public */,
+       9,    1,  128,    2, 0x0a /* Public */,
+      11,    0,  131,    2, 0x0a /* Public */,
+      13,    0,  132,    2, 0x0a /* Public */,
+      15,    0,  133,    2, 0x0a /* Public */,
+      16,    1,  134,    2, 0x0a /* Public */,
+      17,    2,  137,    2, 0x0a /* Public */,
+      20,    0,  142,    2, 0x0a /* Public */,
+      21,    1,  143,    2, 0x0a /* Public */,
+      22,    5,  146,    2, 0x0a /* Public */,
+      28,    0,  157,    2, 0x0a /* Public */,
+      29,    0,  158,    2, 0x0a /* Public */,
+      30,    0,  159,    2, 0x0a /* Public */,
+      31,    5,  160,    2, 0x0a /* Public */,
+      32,    0,  171,    2, 0x0a /* Public */,
+      33,    0,  172,    2, 0x0a /* Public */,
+      34,    2,  173,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void, QMetaType::QUrl,    3,
@@ -145,9 +149,10 @@ static const uint qt_meta_data_inspectionSystem[] = {
     QMetaType::Bool, QMetaType::QUrl, 0x80000000 | 14, 0x80000000 | 14, 0x80000000 | 14, 0x80000000 | 14,    3,   24,   25,   26,   27,
     QMetaType::Void,
     QMetaType::Bool,
+    QMetaType::Void, QMetaType::Int, QMetaType::QString,   10,   35,
 
  // properties: name, type, flags
-      34, 0x80000000 | 12, 0x00095409,
+      36, 0x80000000 | 12, 0x00095409,
 
        0        // eod
 };
@@ -192,6 +197,7 @@ void inspectionSystem::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
         case 18: _t->saveImageCrop(); break;
         case 19: { bool _r = _t->setPatternRecognition();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
+        case 20: _t->changeCurrentCloseUpDocumentRecognizeResult((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -267,13 +273,13 @@ int inspectionSystem::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 20)
+        if (_id < 21)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 20;
+        _id -= 21;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 20)
+        if (_id < 21)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 20;
+        _id -= 21;
     }
 #ifndef QT_NO_PROPERTIES
    else if (_c == QMetaObject::ReadProperty || _c == QMetaObject::WriteProperty

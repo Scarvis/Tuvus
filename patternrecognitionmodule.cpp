@@ -159,7 +159,7 @@ int patternRecognitionModule::setTestPatternRecognition()
 
 int patternRecognitionModule::setRightAnswers()
 {
-	QFile jsonFile(answersFilesPath + "physics_predict.json");
+	QFile jsonFile(answersFilesPath + "physics_answers.json");
 	jsonFile.open(QIODevice::ReadOnly | QIODevice::Text);
 	QTextStream fileTxt(&jsonFile);
 	QString jsonString = fileTxt.readAll();
